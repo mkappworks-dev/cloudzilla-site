@@ -1,0 +1,21 @@
+---
+import { SITE, LINKS, DOCKER_PULL } from '../../consts';
+import CopyButton from './CopyButton.astro';
+---
+<section class="relative overflow-hidden">
+  <div class="grid-bg absolute inset-0 -z-10" aria-hidden="true"></div>
+  <div class="container flex flex-col items-center py-24 text-center md:py-32">
+    <a href={LINKS.github} class="mb-6 inline-flex items-center gap-2 rounded-full border border-border px-3 py-1 text-xs text-muted-foreground hover:text-foreground">
+      <span class="h-1.5 w-1.5 rounded-full bg-success"></span> Alpha · {SITE.version} · open source
+    </a>
+    <h1 class="max-w-3xl text-4xl font-bold tracking-tight md:text-6xl">{SITE.tagline}</h1>
+    <p class="mt-5 max-w-xl text-lg text-muted-foreground">Single binary. No external runtime dependencies. Self-host Git hosting, pull requests, code review, issues, and more.</p>
+    <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+      <a href={LINKS.docs} class="rounded-md bg-primary px-5 py-2.5 font-medium text-primary-foreground hover:opacity-90">Get started</a>
+      <a href={LINKS.github} class="rounded-md border border-border px-5 py-2.5 font-medium hover:bg-muted">View on GitHub ↗</a>
+    </div>
+    <div class="mt-6">
+      <CopyButton text={DOCKER_PULL} class="rounded-md border border-border bg-card px-4 py-2 text-muted-foreground hover:text-foreground" />
+    </div>
+  </div>
+</section>

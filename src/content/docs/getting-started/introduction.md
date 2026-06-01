@@ -17,6 +17,6 @@ production use yet.
 
 ## Next steps
 
-- [Installation](/docs/getting-started/installation) — run it with Docker.
-- [Configuration](/docs/getting-started/configuration) — environment variables and config file.
-- [Deployment](/docs/getting-started/deployment) — production notes.
+- [Installation](/getting-started/installation) — run it with Docker.
+- [Configuration](/getting-started/configuration) — environment variables and config file.
+- [Deployment](/getting-started/deployment) — production notes.

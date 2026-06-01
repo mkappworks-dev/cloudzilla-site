@@ -17,6 +17,17 @@ export const DOCKER_PULL = 'docker pull ghcr.io/mkappworks-dev/cloudzilla-app:v0
 
 export const STACK = ['Go', 'Templ', 'HTMX', 'Alpine.js', 'Tailwind CSS', 'PostgreSQL'];
 
+export const SHOTS = [
+  { src: '/screenshots/home.png', alt: 'Cloudzilla dashboard with repositories, activity, and stats', caption: 'Dashboard — repos, activity, and stats at a glance' },
+  { src: '/screenshots/repo.png', alt: 'Repository code browser with file tree and commit history', caption: 'Code browser — files, blame, and commit history' },
+  { src: '/screenshots/pr.png', alt: 'Pull request conversation with reviewers and checks', caption: 'Pull requests — reviews, merge strategies, and checks' },
+  { src: '/screenshots/diff.png', alt: 'Pull request diff view with inline code review', caption: 'Code review — inline comments and one-click suggestions' },
+  { src: '/screenshots/issue.png', alt: 'Issue detail with labels, assignees, and timeline', caption: 'Issues — labels, assignees, milestones, and timelines' },
+  { src: '/screenshots/board.png', alt: 'Kanban project board with columns of cards', caption: 'Project boards — Kanban planning and milestones' },
+  { src: '/screenshots/discussions.png', alt: 'Discussions list with categories and replies', caption: 'Discussions — community Q&A and announcements' },
+  { src: '/screenshots/releases.png', alt: 'Releases page with tagged versions and notes', caption: 'Releases — tagged versions with changelogs' },
+];
+
 export const FEATURES = [
   { title: 'Git hosting', body: 'HTTP + SSH smart protocol, branch/tag management, code browser with blame, commit history and diffs.' },
   { title: 'Pull requests', body: 'Fast-forward / merge / squash strategies, diff view, draft PRs, auto-merge, conflict detection.' },

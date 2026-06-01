@@ -15,6 +15,10 @@
     "@fontsource-variable/geist": "^5.2.9",
     "@fontsource-variable/geist-mono": "^5.2.8",
     "astro": "^4.16.0",
+    "marked": "^18.0.4",
     "tailwindcss": "^3.4.19"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.19"
   }
 }

@@ -1,0 +1,17 @@
+---
+import LandingLayout from '../layouts/LandingLayout.astro';
+import Nav from '../components/landing/Nav.astro';
+import Footer from '../components/landing/Footer.astro';
+import { marked } from 'marked';
+import raw from '../changelog.md?raw';
+
+const html = await marked.parse(raw);
+---
+<LandingLayout title="Changelog">
+  <Nav />
+  <main id="main" class="container py-20">
+    <h1 class="text-4xl font-bold tracking-tight">Changelog</h1>
+    <article class="prose prose-invert mt-8 max-w-3xl" set:html={html}></article>
+  </main>
+  <Footer />
+</LandingLayout>

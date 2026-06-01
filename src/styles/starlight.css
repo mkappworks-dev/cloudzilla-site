@@ -16,3 +16,8 @@
   --sl-color-gray-6: #0a0a0a;
   --sl-color-black: #000000;
 }
+
+/* Dark-only site: the theme toggle has nothing to switch to. */
+starlight-theme-select {
+  display: none;
+}

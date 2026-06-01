@@ -11,6 +11,16 @@ export default defineConfig({
       title: 'Cloudzilla',
       favicon: '/favicon.svg',
       customCss: ['./src/styles/global.css', './src/styles/starlight.css'],
+      // The site is dark-only (the landing layout hardcodes the dark class).
+      // Pin Starlight to dark before its own theme script runs so the docs
+      // chrome and Shiki code blocks match, and hide the now-redundant toggle.
+      head: [
+        {
+          tag: 'script',
+          content:
+            "try{localStorage.setItem('starlight-theme','dark')}catch(e){}document.documentElement.dataset.theme='dark';",
+        },
+      ],
       social: {
         github: 'https://github.com/mkappworks-dev/cloudzilla-app',
       },

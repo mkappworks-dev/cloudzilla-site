@@ -1,0 +1,17 @@
+---
+const shots = [
+  { src: '/screenshots/home.png', alt: 'Cloudzilla dashboard' },
+  { src: '/screenshots/repo.png', alt: 'Repository code browser' },
+  { src: '/screenshots/pr.png', alt: 'Pull request view' },
+];
+---
+<section class="container py-20">
+  <h2 class="text-center text-3xl font-bold tracking-tight">A familiar, fast interface</h2>
+  <div class="mt-10 grid gap-6 md:grid-cols-3">
+    {shots.map((s) => (
+      <figure class="overflow-hidden rounded-lg border border-border bg-card">
+        <img src={s.src} alt={s.alt} loading="lazy" class="w-full" />
+      </figure>
+    ))}
+  </div>
+</section>

@@ -1,0 +1,19 @@
+---
+import { LINKS } from '../../consts';
+---
+<section class="container py-20">
+  <h2 class="text-center text-3xl font-bold tracking-tight">Roadmap</h2>
+  <div class="mx-auto mt-10 grid max-w-3xl gap-4 md:grid-cols-2">
+    <div class="rounded-lg border border-border bg-card p-6">
+      <p class="font-mono text-xs uppercase tracking-wider text-success">Complete</p>
+      <h3 class="mt-2 text-lg font-semibold">M1 — Core Platform</h3>
+      <p class="mt-2 text-sm text-muted-foreground">Identity, git hosting, issues, PRs, code review, orgs, wikis, discussions, gists, and search. 50+ features across 60+ migrations.</p>
+    </div>
+    <div class="rounded-lg border border-border bg-card p-6">
+      <p class="font-mono text-xs uppercase tracking-wider text-muted-foreground">Planned</p>
+      <h3 class="mt-2 text-lg font-semibold">M2 — Advanced Infrastructure</h3>
+      <p class="mt-2 text-sm text-muted-foreground">Container registry, Git LFS, CI/CD pipelines, clustering, and a GraphQL API.</p>
+    </div>
+  </div>
+  <p class="mt-8 text-center"><a href={LINKS.roadmap} class="text-foreground underline">See the full roadmap →</a></p>
+</section>

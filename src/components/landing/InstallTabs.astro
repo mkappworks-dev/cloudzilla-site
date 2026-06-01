@@ -1,0 +1,38 @@
+---
+import CopyButton from './CopyButton.astro';
+const docker = `make docker-build\nmake docker-run\n\n# Run migrations\ndocker exec -it cloudzilla-app-cloudzilla-1 /app/cloudzilla-cli migrate\n\n# Open http://localhost:8080 — redirects to /setup`;
+const local = `go mod tidy\nmake setup-tailwind\ndocker compose up -d postgres\nmake migrate\nmake dev   # http://localhost:8080`;
+---
+<section class="container py-20">
+  <h2 class="text-center text-3xl font-bold tracking-tight">Up and running in minutes</h2>
+  <div class="mx-auto mt-10 max-w-2xl">
+    <div class="rounded-lg border border-border bg-card">
+      <div class="flex items-center gap-1 border-b border-border p-2" role="tablist">
+        <button type="button" data-tab="docker" class="install-tab rounded px-3 py-1.5 text-sm text-muted-foreground aria-selected:bg-muted aria-selected:text-foreground" aria-selected="true">Docker (recommended)</button>
+        <button type="button" data-tab="local" class="install-tab rounded px-3 py-1.5 text-sm text-muted-foreground aria-selected:bg-muted aria-selected:text-foreground" aria-selected="false">Local dev</button>
+      </div>
+      <div data-panel="docker" class="p-4">
+        <pre class="overflow-x-auto font-mono text-sm text-foreground"><code>{docker}</code></pre>
+      </div>
+      <div data-panel="local" class="hidden p-4">
+        <pre class="overflow-x-auto font-mono text-sm text-foreground"><code>{local}</code></pre>
+      </div>
+    </div>
+    <p class="mt-4 text-center text-sm text-muted-foreground">Full guide in the <a href="/docs/getting-started/installation" class="text-foreground underline">installation docs</a>.</p>
+  </div>
+</section>
+<script>
+  document.querySelectorAll('[role="tablist"]').forEach((list) => {
+    const tabs = list.querySelectorAll('.install-tab');
+    const root = list.closest('div.rounded-lg');
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const name = tab.getAttribute('data-tab');
+        tabs.forEach((t) => t.setAttribute('aria-selected', String(t === tab)));
+        root?.querySelectorAll('[data-panel]').forEach((p) => {
+          p.classList.toggle('hidden', p.getAttribute('data-panel') !== name);
+        });
+      });
+    });
+  });
+</script>

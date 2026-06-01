@@ -1,0 +1,15 @@
+---
+import { FEATURES } from '../../consts';
+---
+<section class="container py-20">
+  <h2 class="text-center text-3xl font-bold tracking-tight">Everything a forge needs</h2>
+  <p class="mx-auto mt-3 max-w-xl text-center text-muted-foreground">50+ features across identity, git hosting, collaboration, and instance management.</p>
+  <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    {FEATURES.map((f) => (
+      <div class="rounded-lg border border-border bg-card p-5">
+        <h3 class="font-semibold">{f.title}</h3>
+        <p class="mt-2 text-sm text-muted-foreground">{f.body}</p>
+      </div>
+    ))}
+  </div>
+</section>

@@ -1,0 +1,30 @@
+---
+import { SITE, LINKS } from '../../consts';
+---
+<footer class="border-t border-border">
+  <div class="container grid gap-8 py-12 sm:grid-cols-2 md:grid-cols-4">
+    <div class="space-y-2">
+      <div class="flex items-center gap-2 font-semibold">
+        <img src="/favicon.svg" alt="" width="20" height="20" class="rounded" />
+        {SITE.name}
+      </div>
+      <p class="text-sm text-muted-foreground">{SITE.tagline}.</p>
+    </div>
+    <div class="space-y-2 text-sm">
+      <p class="font-medium">Product</p>
+      <a href={LINKS.docs} class="block text-muted-foreground hover:text-foreground">Docs</a>
+      <a href={LINKS.roadmap} class="block text-muted-foreground hover:text-foreground">Roadmap</a>
+      <a href={LINKS.changelog} class="block text-muted-foreground hover:text-foreground">Changelog</a>
+    </div>
+    <div class="space-y-2 text-sm">
+      <p class="font-medium">Source</p>
+      <a href={LINKS.github} class="block text-muted-foreground hover:text-foreground">GitHub ↗</a>
+      <a href={LINKS.dockerPackage} class="block text-muted-foreground hover:text-foreground">Docker package ↗</a>
+    </div>
+    <div class="space-y-2 text-sm">
+      <p class="font-medium">License</p>
+      <p class="text-muted-foreground">Business Source License 1.1</p>
+      <p class="text-muted-foreground">Built with Astro &amp; Starlight</p>
+    </div>
+  </div>
+</footer>

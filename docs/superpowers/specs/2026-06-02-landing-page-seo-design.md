@@ -1,89 +1,63 @@
-# Landing Page SEO Optimization — Design
+# Landing Page SEO + Lighthouse Health — Design
 
 **Date:** 2026-06-02
 **Branch:** `seo/landing-page` (off `main`)
-**Scope:** Comprehensive on-page/technical SEO for the Cloudzilla marketing site.
+**Scope:** Comprehensive SEO, plus the Performance / Accessibility / Content
+Lighthouse findings surfaced for the Cloudzilla marketing site.
 
 ## Goal
 
-Make the Cloudzilla landing site fully discoverable and correctly previewed by
-search engines and social/chat unfurlers. The site is a static Astro build
-(`output: 'static'`, `site: 'https://cloudzilla.dev'`). All pages render through
-a single layout, `src/layouts/LandingLayout.astro`, which already owns the
-`<head>`. This work centralizes SEO there rather than introducing a new
-abstraction or third-party integration.
+Raise the Cloudzilla landing site's search discoverability, social/chat preview
+correctness, and Lighthouse scores (Performance, Accessibility, SEO). The site
+is a static Astro build (`output: 'static'`, `site: 'https://cloudzilla.dev'`);
+all pages render through one layout, `src/layouts/LandingLayout.astro`, which
+owns the `<head>`. SEO `<head>` work is centralized there; the other workstreams
+touch specific components, styles, and scripts.
 
-## Current state (baseline)
+## Workstreams
 
-`LandingLayout.astro` `<head>` today contains:
+| # | Area | Lighthouse signal |
+|---|------|-------------------|
+| A | On-page / technical SEO | SEO category, social previews |
+| B | Heading hierarchy | Accessibility: heading order |
+| C | Color contrast | Accessibility: contrast |
+| D | LCP / Speed Index | Performance: LCP render delay, Speed Index |
+| E | Image delivery | Performance: image sizing |
+| F | Descriptive link text | Content best practices — **flagged, see below** |
 
-- `<title>` (dynamic), `<meta name="description">`
-- `og:title`, `og:description`, `og:type`
-- `twitter:card` = `summary_large_image`
-- favicon, `viewport`, `lang="en"`, charset
+---
 
-`@astrojs/sitemap` is configured and generates `sitemap-index.xml` +
-`sitemap-0.xml` at build.
+## A. On-page / technical SEO
 
-### Gaps
+### Baseline
 
-1. **No canonical URL** — risks duplicate-content ambiguity.
-2. **`twitter:card` = `summary_large_image` but no `og:image`** — social/chat
-   shares render a blank card.
-3. No `og:url`, `og:site_name`, `og:locale`.
-4. No `twitter:title` / `twitter:description` / `twitter:image`.
-5. No `robots.txt`.
-6. No structured data (JSON-LD).
-7. Status/utility pages (403, 404, 500, loading, maintenance) are indexable.
-8. Homepage relies on the default description rather than an explicit,
-   search-intent-tuned one.
-9. No `theme-color`.
+`LandingLayout.astro` `<head>` has: dynamic `<title>`, `description`, `og:title`,
+`og:description`, `og:type`, `twitter:card=summary_large_image`, favicon,
+viewport, `lang="en"`. `@astrojs/sitemap` generates `sitemap-index.xml`.
 
-## Approach
+### Gaps → changes
 
-**Centralize SEO in `LandingLayout.astro`, props-driven.** Considered and
-rejected: a dedicated `<Seo>` component (extra indirection when one layout
-already owns the head) and an `astro-seo` integration (new dependency, less
-control). The chosen approach fits the existing architecture and adds no
-runtime dependency.
+- **No canonical** → compute `new URL(Astro.url.pathname, Astro.site)` and emit
+  `<link rel="canonical">` + `og:url`.
+- **`twitter:card=summary_large_image` but no `og:image`** (blank social card) →
+  add `og:image` (+ width 1200 / height 630 / alt), `twitter:image`.
+- Add `og:site_name=Cloudzilla`, `og:locale=en_US`, `twitter:title`,
+  `twitter:description`, `theme-color` (dark bg `#000`).
+- **Approach:** centralize in `LandingLayout.astro` (props-driven). Rejected:
+  a `<Seo>` component (one layout already owns the head) and `astro-seo`
+  (new dependency, less control).
+- New layout props: `image?: string` (defaults to `/og.png`), `noindex?: boolean`
+  (emits `<meta name="robots" content="noindex,follow">`). All image/URL values
+  resolved absolute via `new URL(value, Astro.site)`.
 
-## Components
+### Per-page metadata
 
-### 1. `LandingLayout.astro` head enrichment (shared, all pages)
+- `index.astro` — explicit keyword-tuned `description` ("self-hosted Git forge",
+  "single binary Git hosting", "open-source GitHub alternative").
+- `docs.astro`, `changelog.astro` — meaningful `title` + `description`.
+- `403/404/500/loading/maintenance` — `noindex`.
 
-New optional props on the layout:
-
-- `image?: string` — OG/Twitter image path; defaults to the site OG card (`/og.png`).
-- `noindex?: boolean` — when true, emit `<meta name="robots" content="noindex,follow">`.
-
-Computed in frontmatter:
-
-- `canonical = new URL(Astro.url.pathname, Astro.site)` →
-  `<link rel="canonical" href={canonical}>` and `og:url`.
-- Absolute image URL = `new URL(image, Astro.site)` (OG/Twitter require absolute URLs).
-
-New tags emitted:
-
-- `<link rel="canonical">`
-- `og:url`, `og:site_name` = `Cloudzilla`, `og:locale` = `en_US`,
-  `og:image` (+ `og:image:width` 1200, `og:image:height` 630, `og:image:alt`)
-- `twitter:title`, `twitter:description`, `twitter:image`
-- `<meta name="theme-color">` matching the dark background token
-- `<meta name="robots" content="noindex,follow">` only when `noindex` is set
-
-Existing tags (`title`, `description`, `og:title/description/type`,
-`twitter:card`) are preserved.
-
-### 2. Per-page metadata
-
-- **`index.astro`** — pass an explicit, keyword-tuned `description` targeting
-  search intent ("self-hosted Git forge", "single binary Git hosting",
-  "open-source GitHub alternative"). Keep the brand title (layout default).
-- **`docs.astro`, `changelog.astro`** — pass meaningful `title` + `description`.
-- **`403.astro`, `404.astro`, `500.astro`, `loading.astro`, `maintenance.astro`** —
-  pass `noindex`.
-
-### 3. `public/robots.txt`
+### `public/robots.txt`
 
 ```
 User-agent: *
@@ -96,72 +70,148 @@ Disallow: /maintenance
 Sitemap: https://cloudzilla.dev/sitemap-index.xml
 ```
 
-(404 is conventionally omitted from Disallow; it is `noindex` via meta instead.)
+### JSON-LD (homepage only)
 
-### 4. JSON-LD structured data (homepage only)
+Inline `<script type="application/ld+json">` with a `@graph`:
+`SoftwareApplication` (name, description, `applicationCategory:
+DeveloperApplication`, `operatingSystem: "Linux, Docker"`, `offers` price 0 USD,
+MIT license, url, `sameAs` GitHub) + `WebSite`/`Organization` (name, url, logo,
+`sameAs`). Sourced from `src/consts.ts` (`SITE`, `LINKS`).
 
-Inline `<script type="application/ld+json">` rendered from the homepage,
-containing:
+### Sitemap
 
-- **`SoftwareApplication`** — `name`, `description`, `applicationCategory`:
-  `DeveloperApplication`, `operatingSystem`: `Linux, Docker`, `offers` (price 0,
-  USD), `license` (MIT), `url`, `sameAs`: the GitHub repo.
-- **`WebSite`** / **`Organization`** — `name`, `url`, `logo` (favicon), `sameAs`.
+Add a `filter` to the `sitemap()` integration excluding `/403`, `/500`,
+`/loading`, `/maintenance`.
 
-Sourced from `src/consts.ts` (`SITE`, `LINKS`) to avoid duplication. Homepage
-only, since these entities describe the product/brand and the home document.
+---
 
-### 5. OG social image — `public/og.png` (1200×630)
+## B. Heading hierarchy (Accessibility: heading order)
+
+Section titles are `h2`, but card titles jump to `h4` (skip `h3`) and the footer
+uses `h5`. `RoadmapPreview` already uses `h3` correctly — the others should match.
+
+| File | Current | Change |
+|------|---------|--------|
+| `components/landing/FeatureGrid.astro` | `h4` ×9 | → `h3` |
+| `components/landing/Architecture.astro` | `h4` ×3 | → `h3` |
+| `components/landing/Quickstart.astro` | `h4` ×6 | → `h3` |
+| `components/landing/Footer.astro` | `h5` ×3 | → `h3` |
+
+**Constraint:** verify the CSS targets these by **class**, not tag. Where a
+selector keys off the tag (e.g. `.footer-col h5`), update the selector so visual
+styling is unchanged — this is a semantic-only change, not a visual one.
+
+---
+
+## C. Color contrast (Accessibility, WCAG AA 4.5:1)
+
+`--cz-faint: 0 0% 46%` (`landing.css:18`) ≈ 4.0:1 on `#000` — fails AA for normal
+text. It drives `.pill.gray` (the flagged `span.pill.gray`) and status-page dim
+text.
+
+- Raise `--cz-faint` to ≥ `0 0% 55%` (≈ 4.6:1) — fixes `.pill.gray` and status
+  text in one token change.
+- Investigate the `div.cz` failure: identify the specific low-contrast text node
+  (likely another `--cz-faint`/small muted usage) and lift it to ≥4.5:1.
+- Re-check that raised tokens don't regress the intended visual hierarchy.
+
+---
+
+## D. LCP / Speed Index (Performance)
+
+LCP element is `h1.hero-h1` with ~7,820 ms **render delay** despite a 127 ms
+critical path. Fonts are ruled out (`@fontsource-variable/geist` ships
+`font-display: swap`). Cause: main-thread contention from `herodots.ts`, which
+runs an unbounded `requestAnimationFrame` loop that redraws the full dot grid and
+applies `ctx.filter = 'blur(24px)'` **every frame** (per-frame canvas blur is a
+known paint killer).
+
+Changes to `src/scripts/herodots.ts`:
+
+- **Defer start** off the critical path: begin after `window.load` and/or
+  `requestIdleCallback`, so first paint/LCP isn't starved.
+- **Pause when off-screen:** wrap the rAF loop in an `IntersectionObserver` on
+  `.hero`; stop drawing when the hero isn't visible (saves battery/CPU too).
+- **Remove the per-frame blur:** precompute the soft "clear" ellipse once into an
+  offscreen canvas (or use a cached radial-gradient mask) instead of
+  `ctx.filter='blur(24px)'` on every frame.
+- Already correctly skips entirely under `prefers-reduced-motion` — keep that.
+
+Font fast-path (`LandingLayout.astro`):
+
+- Preload the two Geist variable woff2 (`<link rel="preload" as="font"
+  type="font/woff2" crossorigin>`) to remove the CSS-discovered font request from
+  the chain. Confirm the hashed filenames at build and reference the built paths.
+
+---
+
+## E. Image delivery (Performance, ~32 KiB)
+
+`public/screenshots/home.png` is 1440×900 but displayed at ~1230×769, and the
+`<img>` tags in `Screenshots.astro` lack intrinsic dimensions.
+
+- Add explicit `width`/`height` to the carousel `<img>` elements (prevents
+  layout shift, lets the browser reserve space).
+- Resize the screenshot source assets to their displayed dimensions (or provide a
+  `srcset`/responsive variant). Prefer Astro's `<Image>`/`astro:assets` if the
+  carousel can keep its absolute-positioned cross-fade; otherwise resize the
+  source PNGs in `public/screenshots/` and keep the existing `<img>` markup.
+- Re-export at the smaller size to capture the ~32 KiB saving without visible
+  quality loss at display size.
+
+---
+
+## F. Descriptive link text — FLAGGED, not actionable as-is
+
+Lighthouse reported a non-descriptive "Learn more" link →
+`docs.astro.build/reference/cli-reference`. **This link does not exist anywhere
+in the source or built `dist/`** (the only `astro.build` reference is README
+prose; the site never links to Astro's docs). It likely came from a different
+audited page or a stale/cached deploy. **Action:** confirm the audited URL before
+adding any fix; do not fabricate a change for a link absent from the code. If a
+real generic-text link is later identified, give it descriptive text and (if
+external) `rel="noopener"`.
+
+---
+
+## OG social image — `public/og.png` (1200×630)
 
 A branded dark card: Cloudzilla layered-circles logo + wordmark + tagline
 ("A minimal, self-hosted Git forge") + the `single binary · no dependencies`
-line, using the site's existing color tokens and Geist fonts. Authored as a
-standalone 1200×630 HTML document, rendered and screenshotted via the
-Playwright browser tool, saved to `public/og.png`. No new site dependency; a
-real raster PNG that all crawlers support.
+line, using the site's color tokens and Geist fonts. Authored as a standalone
+1200×630 HTML document, rendered and screenshotted via the Playwright browser
+tool, saved to `public/og.png`. No new site dependency; a real raster PNG.
 
-### 6. Sitemap config (`astro.config.mjs`)
-
-Extend the `sitemap()` integration with a `filter` that excludes status/utility
-routes (`/403`, `/500`, `/loading`, `/maintenance`) from the generated sitemap,
-keeping it to indexable marketing/docs pages.
-
-## Data flow
+## Data flow (SEO head)
 
 ```
 src/consts.ts (SITE, LINKS)
-        │
-        ├─► LandingLayout.astro frontmatter ──► <head> meta + canonical + OG/Twitter
-        │                                         (image/noindex via props)
-        │
-        ├─► index.astro ──► JSON-LD + explicit description
-        │
-Astro.site + Astro.url.pathname ──► canonical / og:url / absolute image URL
+      ├─► LandingLayout.astro ──► <head> meta + canonical + OG/Twitter + preloads
+      │                            (image/noindex via props)
+      ├─► index.astro ──► JSON-LD + explicit description
+Astro.site + Astro.url.pathname ──► canonical / og:url / absolute image URLs
 ```
-
-## Error handling / edge cases
-
-- **Absolute URLs:** all OG/Twitter image and URL values resolved through
-  `new URL(..., Astro.site)` so they are absolute even on nested routes.
-- **Missing `Astro.site`:** already set in `astro.config.mjs`; build is the only
-  context, so no runtime fallback needed.
-- **noindex correctness:** status pages use `noindex,follow` (don't index, still
-  follow links) and are kept out of the sitemap; only `/403`, `/500`, `/loading`,
-  `/maintenance` are disallowed in `robots.txt` (404 handled by meta only).
 
 ## Testing / verification
 
-1. `bun run build` completes without errors.
-2. `dist/index.html` contains: `rel="canonical"`, `og:image`, `og:url`,
-   `twitter:image`, and a parseable `application/ld+json` block.
-3. `dist/robots.txt` exists with the `Sitemap:` line.
-4. `dist/sitemap-0.xml` excludes status routes.
-5. A status page (e.g. `dist/500.html`) contains `noindex`.
-6. `public/og.png` is 1200×630.
+1. `bun run build` completes without errors or broken-link warnings.
+2. `dist/index.html` contains `rel="canonical"`, `og:image`, `og:url`,
+   `twitter:image`, font `rel="preload"`, and a parseable `application/ld+json`.
+3. `dist/robots.txt` exists with the `Sitemap:` line; `dist/sitemap-0.xml`
+   excludes status routes; `dist/500.html` contains `noindex`.
+4. Heading order on the homepage is sequential (`h1 → h2 → h3`, no skips); footer
+   styling visually unchanged.
+5. `--cz-faint`-driven text (incl. `.pill.gray`) measures ≥4.5:1 on `#000`.
+6. `herodots` starts after load, pauses off-screen, and no `ctx.filter` runs per
+   frame; hero still animates on pointer move.
+7. `public/og.png` is 1200×630; screenshot assets re-exported smaller with
+   `width`/`height` on the `<img>`.
+8. Re-run Lighthouse: Performance LCP/Speed-Index improved, no contrast or
+   heading-order failures, SEO category clean.
 
 ## Out of scope
 
-- Content rewriting / copywriting beyond the homepage meta description.
-- Performance/Core-Web-Vitals tuning, analytics, i18n/hreflang.
-- Per-release OG image automation.
+- Copywriting beyond the homepage meta description.
+- Analytics, i18n/hreflang, per-release OG automation.
+- Workstream F until the audited URL is confirmed.
 ```

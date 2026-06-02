@@ -1,15 +1,31 @@
 ---
-import { LINKS, DOCKER_PULL } from '../../consts';
-import CopyButton from './CopyButton.astro';
+import { DOCKER_PULL, LINKS } from '../../consts';
 ---
-<section class="border-t border-border">
-  <div class="container flex flex-col items-center py-20 text-center">
-    <h2 class="text-3xl font-bold tracking-tight">Self-host Cloudzilla today</h2>
-    <p class="mt-3 max-w-md text-muted-foreground">One binary, one Postgres. Pull the image and you're running.</p>
-    <div class="mt-6"><CopyButton text={DOCKER_PULL} class="rounded-md border border-border bg-card px-4 py-2 text-muted-foreground hover:text-foreground" /></div>
-    <div class="mt-6 flex gap-3">
-      <a href={LINKS.github} class="rounded-md bg-primary px-5 py-2.5 font-medium text-primary-foreground hover:opacity-90">Star on GitHub</a>
-      <a href={LINKS.dockerPackage} class="rounded-md border border-border px-5 py-2.5 font-medium hover:bg-muted">Docker package ↗</a>
+<section class="section-pad divide final">
+  <div class="grid-fade" aria-hidden="true"></div>
+  <div class="wrap" style="position:relative">
+    <div class="reveal">
+      <h2>Self-host Cloudzilla today.</h2>
+      <p>One binary. PostgreSQL. Your infrastructure. Pull the alpha and have a forge running before your coffee's cold.</p>
+      <div class="cmd">
+        <div class="cmd-body">
+          <span class="prompt">$</span>
+          <code>{DOCKER_PULL}</code>
+        </div>
+        <button class="copy" data-copy={DOCKER_PULL} aria-label="Copy install command">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+        </button>
+      </div>
+      <div class="final-cta">
+        <a class="btn btn-primary" href="#quickstart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          Get started
+        </a>
+        <a class="btn btn-secondary" href={LINKS.github} target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1.5A10.5 10.5 0 0 0 8.7 22c.5.1.7-.2.7-.5v-1.8c-2.9.6-3.5-1.4-3.5-1.4-.5-1.2-1.2-1.5-1.2-1.5-1-.6 0-.6 0-.6 1 .1 1.6 1 1.6 1 .9 1.6 2.4 1.1 3 .9.1-.7.4-1.1.7-1.4-2.3-.3-4.7-1.2-4.7-5.1 0-1.1.4-2 1-2.7-.1-.3-.5-1.3.1-2.7 0 0 .8-.3 2.7 1a9.4 9.4 0 0 1 5 0c1.9-1.3 2.7-1 2.7-1 .6 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.4 4.8-4.7 5.1.4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5A10.5 10.5 0 0 0 12 1.5z"/></svg>
+          View on GitHub
+        </a>
+      </div>
     </div>
   </div>
 </section>

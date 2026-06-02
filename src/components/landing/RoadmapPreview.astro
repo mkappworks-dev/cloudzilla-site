@@ -1,19 +1,56 @@
 ---
-import { LINKS } from '../../consts';
 ---
-<section class="container py-20">
-  <h2 class="text-center text-3xl font-bold tracking-tight">Roadmap</h2>
-  <div class="mx-auto mt-10 grid max-w-3xl gap-4 md:grid-cols-2">
-    <div class="rounded-lg border border-border bg-card p-6">
-      <p class="font-mono text-xs uppercase tracking-wider text-success">Complete</p>
-      <h3 class="mt-2 text-lg font-semibold">M1 — Core Platform</h3>
-      <p class="mt-2 text-sm text-muted-foreground">Identity, git hosting, issues, PRs, code review, orgs, wikis, discussions, gists, and search. 50+ features across 60+ migrations.</p>
+<section class="section-pad divide" id="roadmap">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Roadmap</span>
+      <h2>Honest about where it is.</h2>
+      <p>Cloudzilla is in alpha. Milestone 1 is shipped and in daily use; Milestone 2 is what's next. No vaporware on this list.</p>
     </div>
-    <div class="rounded-lg border border-border bg-card p-6">
-      <p class="font-mono text-xs uppercase tracking-wider text-muted-foreground">Planned</p>
-      <h3 class="mt-2 text-lg font-semibold">M2 — Advanced Infrastructure</h3>
-      <p class="mt-2 text-sm text-muted-foreground">Container registry, Git LFS, CI/CD pipelines, clustering, and a GraphQL API.</p>
+    <div class="road-timeline">
+      <div class="tl-stops">
+        <div class="tl-stop done">
+          <div class="tl-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+          <div class="tl-card">
+            <div class="tl-head"><h3>Milestone 1</h3><span class="pill green">Shipped</span></div>
+            <p class="tl-sub">The core forge — in daily use today.</p>
+            <ul class="tl-list">
+              <li>Git hosting — HTTP + SSH</li>
+              <li>Pull requests &amp; review</li>
+              <li>Issues, milestones &amp; boards</li>
+              <li>Orgs, roles &amp; permissions</li>
+              <li>Auth — OAuth, 2FA, SSO</li>
+              <li>Webhooks &amp; full-text search</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tl-stop current">
+          <div class="tl-dot"><span class="tl-pulse"></span></div>
+          <div class="tl-card">
+            <div class="tl-head"><h3>Milestone 2</h3><span class="pill amber">In progress</span></div>
+            <p class="tl-sub">You are here — the path to 1.0.</p>
+            <ul class="tl-list">
+              <li>Container registry</li>
+              <li>Git LFS support</li>
+              <li>CI / CD pipelines</li>
+              <li>Clustering &amp; HA</li>
+              <li>GraphQL API</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tl-stop future">
+          <div class="tl-dot"></div>
+          <div class="tl-card">
+            <div class="tl-head"><h3>v1.0</h3><span class="pill gray">Future</span></div>
+            <p class="tl-sub">General availability.</p>
+            <ul class="tl-list">
+              <li>Stable API surface</li>
+              <li>Production hardening</li>
+              <li>Apache 2.0 conversion</li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <p class="mt-8 text-center"><a href={LINKS.roadmap} class="text-foreground underline">See the full roadmap →</a></p>
 </section>

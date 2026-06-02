@@ -17,28 +17,95 @@ export const DOCKER_PULL = 'docker pull ghcr.io/mkappworks-dev/cloudzilla-app:v0
 
 export const STACK = ['Go', 'Templ', 'HTMX', 'Alpine.js', 'Tailwind CSS', 'PostgreSQL'];
 
+// Carousel screenshots. `url` drives the faux browser-chrome address bar.
 export const SHOTS = [
-  { src: '/screenshots/home.png', alt: 'Cloudzilla dashboard with repositories, activity, and stats', caption: 'Dashboard — repos, activity, and stats at a glance' },
-  { src: '/screenshots/repo.png', alt: 'Repository code browser with file tree and commit history', caption: 'Code browser — files, blame, and commit history' },
-  { src: '/screenshots/pr.png', alt: 'Pull request conversation with reviewers and checks', caption: 'Pull requests — reviews, merge strategies, and checks' },
-  { src: '/screenshots/diff.png', alt: 'Pull request diff view with inline code review', caption: 'Code review — inline comments and one-click suggestions' },
-  { src: '/screenshots/issue.png', alt: 'Issue detail with labels, assignees, and timeline', caption: 'Issues — labels, assignees, milestones, and timelines' },
-  { src: '/screenshots/board.png', alt: 'Kanban project board with columns of cards', caption: 'Project boards — Kanban planning and milestones' },
-  { src: '/screenshots/discussions.png', alt: 'Discussions list with categories and replies', caption: 'Discussions — community Q&A and announcements' },
-  { src: '/screenshots/releases.png', alt: 'Releases page with tagged versions and notes', caption: 'Releases — tagged versions with changelogs' },
+  { src: '/screenshots/home.png', alt: 'Cloudzilla dashboard', title: 'Dashboard', desc: 'Repositories, activity, and what needs your attention.', url: 'cloudzilla.dev/acme', label: 'Dashboard' },
+  { src: '/screenshots/repo.png', alt: 'Repository view', title: 'Repository', desc: 'Code browser, branches, releases, and language breakdown.', url: 'cloudzilla.dev/acme/forge', label: 'Repository' },
+  { src: '/screenshots/pr.png', alt: 'Pull request', title: 'Pull request', desc: 'Conversation, reviewers, passing checks, and linked issues.', url: 'cloudzilla.dev/acme/forge/pulls/214', label: 'Pull request' },
+  { src: '/screenshots/diff.png', alt: 'Diff view', title: 'Diff view', desc: 'Unified or split, file tree, and hide-whitespace.', url: 'cloudzilla.dev/acme/forge/pulls/214/files', label: 'Diff' },
+  { src: '/screenshots/issue.png', alt: 'Issue', title: 'Issues', desc: 'Labels, assignees, priority, and milestone progress.', url: 'cloudzilla.dev/acme/forge/issues/87', label: 'Issues' },
+  { src: '/screenshots/board.png', alt: 'Project board', title: 'Project boards', desc: 'Kanban columns linked to their issues and PRs.', url: 'cloudzilla.dev/acme/forge/projects/2', label: 'Boards' },
+  { src: '/screenshots/discussions.png', alt: 'Discussions', title: 'Discussions', desc: 'Q&A, ideas, and announcements with reactions.', url: 'cloudzilla.dev/acme/forge/discussions', label: 'Discussions' },
+  { src: '/screenshots/releases.png', alt: 'Releases', title: 'Releases', desc: 'Tag, package, and ship — drafts, pre-releases, latest.', url: 'cloudzilla.dev/acme/forge/releases', label: 'Releases' },
 ];
 
-export const FEATURES = [
-  { title: 'Git hosting', body: 'HTTP + SSH smart protocol, branch/tag management, code browser with blame, commit history and diffs.' },
-  { title: 'Pull requests', body: 'Fast-forward / merge / squash strategies, diff view, draft PRs, auto-merge, conflict detection.' },
-  { title: 'Code review', body: 'Approve / request changes, inline line comments, one-click suggestions, CODEOWNERS auto-assign.' },
-  { title: 'Issues', body: 'Open/close workflow, labels, assignees, milestones, pinning, locking, private issues, templates.' },
-  { title: 'Organizations', body: 'Shared namespaces with owner/member roles, org profile pages, member management.' },
-  { title: 'Access control', body: 'Three-tier permissions (instance/org/repo), branch protection, deploy keys, access tokens.' },
-  { title: 'Authentication', body: 'JWT cookies, Google OAuth, TOTP 2FA with recovery codes, LDAP/SAML SSO, invitations.' },
-  { title: 'Collaboration', body: 'Wikis, discussions, gists, profile READMEs, topics, stars, forks, reactions, @mentions.' },
-  { title: 'Notifications', body: 'In-app notifications with unread badge, email (SMTP), watching and subscriptions.' },
-  { title: 'Webhooks', body: 'Push/issues/PR events, HMAC-SHA256 signing, retry with backoff, delivery logs.' },
-  { title: 'Search', body: 'Full-text search across repos, issues, PRs, and users (PostgreSQL tsvector + GIN).' },
-  { title: 'Project management', body: 'Kanban boards, milestones with progress tracking, activity feed.' },
+// Curated release notes for the changelog feed, mirroring the release-please
+// history in changelog.md. Update per release as new versions ship.
+export interface ChangelogGroup {
+  kind: 'added' | 'improved' | 'fixed';
+  items: string[]; // may contain inline <b> / <span class="mono"> markup
+}
+export interface ChangelogEntry {
+  version: string;
+  date: string;
+  codename: string;
+  tag: { label: string; tone: 'green' | 'gray' };
+  groups: ChangelogGroup[];
+}
+
+export const CHANGELOG: ChangelogEntry[] = [
+  {
+    version: 'v0.3.0',
+    date: 'MAY 20, 2026',
+    codename: 'UI overhaul — flagship pages, insights, and a new design system.',
+    tag: { label: 'Latest', tone: 'green' },
+    groups: [
+      {
+        kind: 'added',
+        items: [
+          '<b>Full UI overhaul</b> — flagship repository, issue, and pull-request pages rebuilt, with PR sub-views, account navigation, and a redesigned milestone view.',
+          '<b>Repository Insights</b> — commits, contributors, pulse, and a dependency graph.',
+          '<b>Code browser &amp; project boards</b> redesigned, alongside refreshed tracker, Actions, and review-request views.',
+          'Profile, organizations, wiki, releases, discussions, and settings pages polished.',
+          'Publish step to promote <b>draft releases</b> to published.',
+        ],
+      },
+      {
+        kind: 'improved',
+        items: [
+          'New <b>design-system foundation</b> — every page ported and the shared component library expanded.',
+          'Hardened the GitHub Actions CI workflows.',
+        ],
+      },
+    ],
+  },
+  {
+    version: 'v0.2.0',
+    date: 'MAY 12, 2026',
+    codename: 'First public alpha — the core forge.',
+    tag: { label: 'alpha', tone: 'gray' },
+    groups: [
+      {
+        kind: 'added',
+        items: [
+          '<b>Git hosting</b> over smart HTTP + SSH — pure Go via <span class="mono">go-git</span>, with no <span class="mono">git</span> executable on the box.',
+          '<b>Code browser</b> — tree, blob, blame, commit history, and syntax-highlighted diffs.',
+          '<b>Pull requests</b> — fast-forward, three-way, and squash merges, draft PRs, and auto-merge.',
+          '<b>Code review</b> — inline line comments, one-click suggestions, and <span class="mono">CODEOWNERS</span> auto-assign.',
+          '<b>Issues</b> — labels, assignees, milestones, reactions, pinning, locking, templates, and private issues.',
+          '<b>Organizations</b> — orgs, collaborators, three-tier permissions, and protected branches.',
+          '<b>Authentication</b> — Google OAuth, TOTP 2FA, LDAP / SAML SSO, personal access tokens, and deploy keys.',
+          '<b>Notifications</b> — in-app feed plus SMTP email digests, per-repo watch levels, and an activity feed.',
+          '<b>Webhooks</b> with HMAC signing, retry / backoff, and redelivery.',
+          'Full-text search, explore / trending, project boards, wikis, gists, profile READMEs, topics, stars, and forks.',
+          'Single static binary, shipped as a <b>Docker image</b>; <b>PostgreSQL</b> is the only runtime dependency.',
+        ],
+      },
+      {
+        kind: 'improved',
+        items: [
+          'Migrated rendering to <b>templ</b> type-safe components across every page.',
+          'Standardized on <b>PostgreSQL</b> — removed SQLite, consolidated migrations, and moved stores to sqlx.',
+        ],
+      },
+      {
+        kind: 'fixed',
+        items: [
+          'Implemented the full git pack protocol for HTTP and SSH transport.',
+          'Hardened project-board data isolation and reaction ownership checks.',
+          'CSRF tokens now included in hand-rolled <span class="mono">fetch()</span> calls, plus numerous security-review fixes across phases.',
+        ],
+      },
+    ],
+  },
 ];

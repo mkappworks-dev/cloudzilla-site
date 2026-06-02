@@ -1,18 +1,46 @@
 ---
-import { STACK } from '../../consts';
 ---
-<section class="border-y border-border bg-card/40">
-  <div class="container py-16 text-center">
-    <p class="font-mono text-xs uppercase tracking-wider text-muted-foreground">Built with</p>
-    <div class="mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
-      {STACK.map((s) => (
-        <span class="font-mono text-sm text-foreground">{s}</span>
-      ))}
+<section class="section-pad divide" id="architecture">
+  <div class="wrap">
+    <div class="arch-head reveal">
+      <span class="eyebrow">Architecture</span>
+      <h2>Server-rendered, single binary, fast.</h2>
     </div>
-    <p class="mx-auto mt-8 max-w-2xl text-muted-foreground">
-      One Go binary serves the web UI, the HTTP git smart protocol, and an SSH server — no
-      git executable required. Templ renders type-safe HTML; HTMX and Alpine handle the small amount of
-      client behavior. PostgreSQL is the only external dependency.
-    </p>
+    <div class="arch">
+      <div class="arch-claims reveal">
+        <div class="arch-claim">
+          <span class="ac-num">01</span>
+          <div><h4>Single binary, zero runtime deps</h4><p>One static Go binary. PostgreSQL is the only thing it talks to — trivial to operate next to GitLab or GitHub EE.</p></div>
+        </div>
+        <div class="arch-claim">
+          <span class="ac-num">02</span>
+          <div><h4>Self-hostable, BSL 1.1 licensed</h4><p>Runs entirely on your own infrastructure — no SaaS, no tenant you don't control. Source-available under the Business Source License 1.1, so you keep full data sovereignty.</p></div>
+        </div>
+        <div class="arch-claim">
+          <span class="ac-num">03</span>
+          <div><h4>Fast &amp; lightweight</h4><p>Go + PostgreSQL + HTMX. Server-rendered HTML over the wire — no heavy SPA to download and hydrate.</p></div>
+        </div>
+      </div>
+      <div class="reveal" data-d="1">
+        <div class="arch-diagram">
+          <div class="dg-row dg-inputs">
+            <div class="dg-node sm"><span class="dg-k mono">SSH</span><span class="dg-p mono">:22</span></div>
+            <div class="dg-node sm"><span class="dg-k mono">HTTP</span><span class="dg-p mono">:3000</span></div>
+          </div>
+          <div class="dg-arrows" aria-hidden="true"><span></span><span></span></div>
+          <div class="dg-node dg-core">
+            <div class="dg-core-top"><span class="dg-name">cloudzilla</span><span class="pill green">single binary</span></div>
+            <div class="dg-core-sub mono">one static Go binary · go-git · templ · HTMX</div>
+            <div class="dg-chips"><span class="mono">git</span><span class="mono">ssh</span><span class="mono">web</span><span class="mono">api</span><span class="mono">jobs</span></div>
+          </div>
+          <div class="dg-arrows one" aria-hidden="true"><span></span></div>
+          <div class="dg-node dg-db">
+            <span class="dg-k mono">PostgreSQL</span>
+            <span class="dg-desc">data + full-text search (tsvector)</span>
+          </div>
+          <p class="dg-note mono">no external runtime — nothing else to operate</p>
+        </div>
+      </div>
+    </div>
   </div>
 </section>

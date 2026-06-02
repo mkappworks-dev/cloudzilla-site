@@ -1,0 +1,71 @@
+---
+const dockerCopy = `docker pull ghcr.io/mkappworks-dev/cloudzilla-app:v0.3.0
+docker run -d -p 3000:3000 -e DATABASE_URL=postgres://localhost/cloudzilla ghcr.io/mkappworks-dev/cloudzilla-app:v0.3.0`;
+const localCopy = `git clone https://github.com/mkappworks-dev/cloudzilla-app
+cd cloudzilla-app
+make dev`;
+---
+<section class="section-pad divide" id="quickstart">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Quickstart</span>
+      <h2>Up and running in minutes.</h2>
+      <p data-steps="docker">Pull the image, point it at PostgreSQL, open the browser. No git to install, no services to wire together.</p>
+      <p data-steps="local" hidden>Clone the repo, run <span class="mono">make dev</span>, open the browser. Pure Go with templ + Tailwind hot reload — no git binary needed.</p>
+    </div>
+
+    <div class="qs-layout reveal">
+      <div class="qs-steps">
+        <ol class="qs-steplist" data-steps="docker">
+          <li><span class="qs-n mono">1</span><div><h4>Pull the image</h4><p>Grab the alpha from <span class="mono">ghcr.io</span> — no git to install.</p></div></li>
+          <li><span class="qs-n mono">2</span><div><h4>Point it at PostgreSQL</h4><p>One <span class="mono">DATABASE_URL</span>. The only dependency it has.</p></div></li>
+          <li><span class="qs-n mono">3</span><div><h4>Open the browser</h4><p>Hit <span class="mono">:3000</span> and you're running a forge.</p></div></li>
+        </ol>
+        <ol class="qs-steplist" data-steps="local" hidden>
+          <li><span class="qs-n mono">1</span><div><h4>Clone the repo</h4><p><span class="mono">git clone</span> and <span class="mono">cd</span> in — pure Go, no git binary needed.</p></div></li>
+          <li><span class="qs-n mono">2</span><div><h4>Run make dev</h4><p>templ + Tailwind watch with hot reload.</p></div></li>
+          <li><span class="qs-n mono">3</span><div><h4>Open the browser</h4><p>Hit <span class="mono">:3000</span> and start hacking.</p></div></li>
+        </ol>
+      </div>
+      <div class="qs-card" data-tabset>
+        <div class="qs-tabs" role="tablist" aria-label="Quickstart method">
+          <button class="qs-tab" role="tab" data-tab="docker" aria-selected="true">Docker</button>
+          <button class="qs-tab" role="tab" data-tab="local" aria-selected="false">Local dev</button>
+        </div>
+
+        <div class="qs-panel is-active" data-panel="docker">
+          <div class="code-block">
+            <button class="code-copy" data-copy={dockerCopy}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+              <span data-copy-label>Copy</span>
+            </button>
+<pre><span class="c-prompt">$</span> docker pull ghcr.io/mkappworks-dev/cloudzilla-app:v0.3.0
+
+<span class="c-prompt">$</span> docker run -d <span class="c-flag">\</span>
+    <span class="c-flag">-p</span> 3000:3000 <span class="c-flag">\</span>
+    <span class="c-flag">-e</span> DATABASE_URL=<span class="c-str">postgres://localhost/cloudzilla</span> <span class="c-flag">\</span>
+    ghcr.io/mkappworks-dev/cloudzilla-app:v0.3.0
+
+<span class="c-comment"># open http://localhost:3000 — that's it.</span></pre>
+          </div>
+        </div>
+
+        <div class="qs-panel" data-panel="local">
+          <div class="code-block">
+            <button class="code-copy" data-copy={localCopy}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+              <span data-copy-label>Copy</span>
+            </button>
+<pre><span class="c-prompt">$</span> git clone https://github.com/mkappworks-dev/cloudzilla-app
+<span class="c-prompt">$</span> cd cloudzilla-app
+
+<span class="c-prompt">$</span> make dev            <span class="c-comment"># templ + tailwind watch, hot reload</span>
+<span class="c-comment"># single binary — no git executable required</span>
+
+<span class="c-prompt">$</span> go build <span class="c-flag">-o</span> cloudzilla ./cmd/cloudzilla</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -288,9 +288,9 @@
 }
 .cz .cmdk-item .ck-ico svg { width: 14px; height: 14px; }
 .cz .cmdk-item .ck-text { min-width: 0; flex: 1; }
-.cz .cmdk-item .ck-title { font-size: 14px; line-height: 1.35; color: hsl(var(--cz-fg)); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cz .cmdk-item .ck-title { display: block; font-size: 14px; line-height: 1.35; color: hsl(var(--cz-fg)); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .cz .cmdk-item .ck-title mark { background: hsl(var(--cz-primary) / .22); color: hsl(var(--cz-fg)); border-radius: 2px; padding: 0 1px; }
-.cz .cmdk-item .ck-ctx { font-size: 11.5px; line-height: 1.3; color: hsl(var(--cz-faint)); margin-top: 4px; font-family: var(--cz-font-mono); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cz .cmdk-item .ck-ctx { display: block; font-size: 11.5px; line-height: 1.3; color: hsl(var(--cz-faint)); margin-top: 4px; font-family: var(--cz-font-mono); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .cz .cmdk-item .ck-enter { opacity: 0; color: hsl(var(--cz-primary)); flex-shrink: 0; }
 .cz .cmdk-item .ck-enter svg { width: 15px; height: 15px; }
 .cz .cmdk-item.active { background: hsl(var(--cz-border) / .07); }

@@ -75,8 +75,9 @@ Sitemap: https://cloudzilla.dev/sitemap-index.xml
 Inline `<script type="application/ld+json">` with a `@graph`:
 `SoftwareApplication` (name, description, `applicationCategory:
 DeveloperApplication`, `operatingSystem: "Linux, Docker"`, `offers` price 0 USD,
-MIT license, url, `sameAs` GitHub) + `WebSite`/`Organization` (name, url, logo,
-`sameAs`). Sourced from `src/consts.ts` (`SITE`, `LINKS`).
+license → the product's BSL 1.1 LICENSE in its repo, url, `sameAs` GitHub) +
+`WebSite`/`Organization` (name, url, logo, `sameAs`). Sourced from
+`src/consts.ts` (`SITE`, `LINKS`).
 
 ### Sitemap
 

@@ -2,7 +2,7 @@
    Cloudzilla — landing + changelog design system
    Ported from the design handoff (cloudzilla.css + variants).
    All tokens are namespaced --cz-* so they never collide with
-   the global Starlight/docs tokens defined in global.css.
+   the global tokens defined in global.css.
    Source of truth for exact values: design_handoff_cloudzilla_landing.
    ============================================================ */
 

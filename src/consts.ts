@@ -3,6 +3,7 @@ export const SITE = {
   tagline: 'A minimal, self-hosted Git forge',
   description: 'Single binary. No external runtime dependencies. Git hosting, pull requests, code review, issues, and more.',
   version: 'v0.3.0',
+  ogImage: '/og.png',
 };
 
 export const LINKS = {

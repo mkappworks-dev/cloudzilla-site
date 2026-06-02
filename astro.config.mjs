@@ -10,6 +10,11 @@ export default defineConfig({
   output: 'static',
   integrations: [
     tailwind({ applyBaseStyles: false }),
-    sitemap(),
+    sitemap({
+      filter: (page) =>
+        !['/403', '/500', '/loading', '/maintenance'].some((p) =>
+          page === `https://cloudzilla.dev${p}/` || page === `https://cloudzilla.dev${p}`,
+        ),
+    }),
   ],
 });

@@ -28,7 +28,8 @@ const first = SHOTS[0];
               alt={s.alt}
               width="1440"
               height="900"
-              loading={i === 0 ? 'eager' : 'lazy'}
+              loading="lazy"
+              decoding="async"
               data-title={s.title}
               data-desc={s.desc}
               data-url={s.url}

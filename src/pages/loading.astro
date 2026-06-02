@@ -1,0 +1,48 @@
+---
+import LandingLayout from '../layouts/LandingLayout.astro';
+import '../styles/status.css';
+// Intentionally minimal chrome (brand only, no full nav/footer) so users
+// aren't invited to navigate away mid-boot. This is a static demo of the
+// interstitial; in the app, drive #load-line from real boot/health signals.
+---
+<LandingLayout title="Loading" description="Spinning up your forge.">
+  <div class="status-page">
+    <header class="status-head">
+      <div class="wrap">
+        <a class="brand" href="/" aria-label="Cloudzilla home">
+          <span class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg></span>
+          <span class="name">cloudzilla</span>
+        </a>
+      </div>
+    </header>
+
+    <main id="main" class="status-main">
+      <div class="grid-fade" aria-hidden="true"></div>
+      <div class="status-inner">
+        <div class="load-mark" aria-hidden="true">
+          <span class="load-ring"></span>
+          <span class="lm-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg></span>
+        </div>
+
+        <span class="status-badge ok"><span class="sb-dot"></span> Starting up</span>
+        <h1 class="status-h1">Spinning up your forge.</h1>
+        <p class="status-sub">One static binary, one database connection. This only takes a moment.</p>
+
+        <div class="load-bar" role="progressbar" aria-label="Loading"></div>
+
+        <p class="load-status" aria-live="polite"><span id="load-line">connecting to PostgreSQL</span><span class="cur"></span></p>
+      </div>
+    </main>
+
+    <footer class="status-foot">
+      <div class="wrap">
+        <span class="lic">Licensed under <b>BSL 1.1</b>.</span>
+        <span class="made">© 2026 Cloudzilla · built with Go + HTMX</span>
+      </div>
+    </footer>
+  </div>
+</LandingLayout>
+
+<script>
+  import '../scripts/loading.ts';
+</script>

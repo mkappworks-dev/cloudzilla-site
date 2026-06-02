@@ -14,6 +14,8 @@ import { SITE, LINKS } from '../consts';
 const description =
   'Cloudzilla is a minimal, self-hosted Git forge — a single binary with no external runtime dependencies. Self-host Git hosting, pull requests, code review, and issues as an open-source GitHub alternative.';
 
+const siteUrl = new URL('/', Astro.site).href;
+
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -23,15 +25,15 @@ const jsonLd = {
       description,
       applicationCategory: 'DeveloperApplication',
       operatingSystem: 'Linux, Docker',
-      url: 'https://cloudzilla.dev/',
+      url: siteUrl,
       sameAs: [LINKS.github],
-      license: 'https://opensource.org/licenses/MIT',
+      license: `${LINKS.github}/blob/main/LICENSE`,
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
     },
     {
       '@type': 'WebSite',
       name: SITE.name,
-      url: 'https://cloudzilla.dev/',
+      url: siteUrl,
       sameAs: [LINKS.github],
     },
   ],

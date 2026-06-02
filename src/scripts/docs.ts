@@ -85,15 +85,28 @@ function wireCmdk() {
 
   const slug = (s: string) => s.toLowerCase().replace(/[^\w]+/g, '-').replace(/(^-|-$)/g, '');
 
-  /* build the index from the live page */
+  /* map each in-page section to its sidebar category (the .dn-group label),
+     so palette results group the same way the sidebar does. */
+  const sectionCategory: Record<string, string> = {};
+  document.querySelectorAll<HTMLElement>('.docs-nav .dn-group').forEach((g) => {
+    const label = (g.querySelector('.dn-label')?.textContent ?? '').trim();
+    g.querySelectorAll<HTMLAnchorElement>(".dn-link[href^='#']").forEach((a) => {
+      const id = (a.getAttribute('href') ?? '').slice(1);
+      if (id) sectionCategory[id] = label;
+    });
+  });
+
+  /* build the index from the live page. ctx is a breadcrumb: a section
+     shows its category, a heading shows its parent section. */
   const index: CmdkItem[] = [];
   document.querySelectorAll<HTMLElement>('.docs-section[id]').forEach((sec) => {
     const h2 = sec.querySelector('h2');
     const secTitle = h2 ? (h2.textContent ?? '').trim() : sec.id;
-    index.push({ title: secTitle, ctx: 'Section', icon: 'section', hash: '#' + sec.id, group: 'Sections' });
+    const category = sectionCategory[sec.id] || 'Documentation';
+    index.push({ title: secTitle, ctx: category, icon: 'section', hash: '#' + sec.id, group: category });
     sec.querySelectorAll<HTMLElement>('h3').forEach((h3) => {
       if (!h3.id) h3.id = sec.id + '-' + slug(h3.textContent ?? '');
-      index.push({ title: (h3.textContent ?? '').trim(), ctx: secTitle, icon: 'heading', hash: '#' + h3.id, group: 'Sections' });
+      index.push({ title: (h3.textContent ?? '').trim(), ctx: secTitle, icon: 'heading', hash: '#' + h3.id, group: category });
     });
   });
   /* a few static destinations */
@@ -126,6 +139,9 @@ function wireCmdk() {
 
   const render = (raw: string) => {
     const q = (raw || '').trim().toLowerCase();
+    // Searching → flat, relevance-ranked, no dividers. Browsing (empty
+    // query) → grouped by sidebar category in document order.
+    const grouped = !q;
     const list = q
       ? index
           .map((it) => ({ it, s: score(it, q) }))
@@ -143,11 +159,16 @@ function wireCmdk() {
     let html = '';
     let lastGroup: string | null = null;
     list.forEach((it, n) => {
-      if (it.group !== lastGroup) { html += '<div class="cmdk-group-label">' + esc(it.group) + '</div>'; lastGroup = it.group; }
+      if (grouped && it.group !== lastGroup) { html += '<div class="cmdk-group-label">' + esc(it.group) + '</div>'; lastGroup = it.group; }
+      // A section's breadcrumb is its category — redundant under the category
+      // divider, so drop it while browsing. Keep it for headings/destinations
+      // (and for everything in flat search mode, where there's no divider).
+      const showCtx = !(grouped && it.icon === 'section');
+      const ctxHtml = showCtx ? '<span class="ck-ctx">' + esc(it.ctx) + (it.external ? ' ↗' : '') + '</span>' : '';
       html +=
         '<div class="cmdk-item' + (n === 0 ? ' active' : '') + '" role="option" data-i="' + n + '">' +
         '<span class="ck-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + ICONS[it.icon] + '</svg></span>' +
-        '<span class="ck-text"><span class="ck-title">' + highlight(it.title, q) + '</span><span class="ck-ctx">' + esc(it.ctx) + (it.external ? ' ↗' : '') + '</span></span>' +
+        '<span class="ck-text"><span class="ck-title">' + highlight(it.title, q) + '</span>' + ctxHtml + '</span>' +
         '<span class="ck-enter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 10l-5 5 5 5"/><path d="M20 4v7a4 4 0 0 1-4 4H4"/></svg></span>' +
         '</div>';
     });

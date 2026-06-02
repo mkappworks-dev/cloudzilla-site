@@ -8,7 +8,7 @@ export const SITE = {
 export const LINKS = {
   github: 'https://github.com/mkappworks-dev/cloudzilla-app',
   dockerPackage: 'https://github.com/mkappworks-dev/cloudzilla-app/pkgs/container/cloudzilla-app',
-  docs: '/getting-started/introduction',
+  docs: '/docs',
   changelog: '/changelog',
 };
 

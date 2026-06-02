@@ -1,6 +1,7 @@
 ---
 const dockerCopy = `docker pull ghcr.io/mkappworks-dev/cloudzilla-app:v0.3.0
-docker run -d -p 3000:3000 -e DATABASE_URL=postgres://localhost/cloudzilla ghcr.io/mkappworks-dev/cloudzilla-app:v0.3.0`;
+docker run -d --name cloudzilla -p 8080:8080 -p 2222:2222 -e CZ_DATABASE_DSN=postgres://localhost/cloudzilla?sslmode=disable ghcr.io/mkappworks-dev/cloudzilla-app:v0.3.0
+docker exec -it cloudzilla /app/cloudzilla-cli migrate`;
 const localCopy = `git clone https://github.com/mkappworks-dev/cloudzilla-app
 cd cloudzilla-app
 make dev`;
@@ -18,13 +19,13 @@ make dev`;
       <div class="qs-steps">
         <ol class="qs-steplist" data-steps="docker">
           <li><span class="qs-n mono">1</span><div><h4>Pull the image</h4><p>Grab the alpha from <span class="mono">ghcr.io</span> — no git to install.</p></div></li>
-          <li><span class="qs-n mono">2</span><div><h4>Point it at PostgreSQL</h4><p>One <span class="mono">DATABASE_URL</span>. The only dependency it has.</p></div></li>
-          <li><span class="qs-n mono">3</span><div><h4>Open the browser</h4><p>Hit <span class="mono">:3000</span> and you're running a forge.</p></div></li>
+          <li><span class="qs-n mono">2</span><div><h4>Point it at PostgreSQL</h4><p>One <span class="mono">CZ_DATABASE_DSN</span>, then run <span class="mono">cloudzilla-cli migrate</span> once.</p></div></li>
+          <li><span class="qs-n mono">3</span><div><h4>Open the browser</h4><p>Hit <span class="mono">:8080</span> and you're running a forge.</p></div></li>
         </ol>
         <ol class="qs-steplist" data-steps="local" hidden>
           <li><span class="qs-n mono">1</span><div><h4>Clone the repo</h4><p><span class="mono">git clone</span> and <span class="mono">cd</span> in — pure Go, no git binary needed.</p></div></li>
           <li><span class="qs-n mono">2</span><div><h4>Run make dev</h4><p>templ + Tailwind watch with hot reload.</p></div></li>
-          <li><span class="qs-n mono">3</span><div><h4>Open the browser</h4><p>Hit <span class="mono">:3000</span> and start hacking.</p></div></li>
+          <li><span class="qs-n mono">3</span><div><h4>Open the browser</h4><p>Hit <span class="mono">:8080</span> and start hacking.</p></div></li>
         </ol>
       </div>
       <div class="qs-card" data-tabset>
@@ -41,12 +42,13 @@ make dev`;
             </button>
 <pre><span class="c-prompt">$</span> docker pull ghcr.io/mkappworks-dev/cloudzilla-app:v0.3.0
 
-<span class="c-prompt">$</span> docker run -d <span class="c-flag">\</span>
-    <span class="c-flag">-p</span> 3000:3000 <span class="c-flag">\</span>
-    <span class="c-flag">-e</span> DATABASE_URL=<span class="c-str">postgres://localhost/cloudzilla</span> <span class="c-flag">\</span>
+<span class="c-prompt">$</span> docker run -d <span class="c-flag">--name</span> cloudzilla <span class="c-flag">\</span>
+    <span class="c-flag">-p</span> 8080:8080 <span class="c-flag">-p</span> 2222:2222 <span class="c-flag">\</span>
+    <span class="c-flag">-e</span> CZ_DATABASE_DSN=<span class="c-str">postgres://localhost/cloudzilla?sslmode=disable</span> <span class="c-flag">\</span>
     ghcr.io/mkappworks-dev/cloudzilla-app:v0.3.0
 
-<span class="c-comment"># open http://localhost:3000 — that's it.</span></pre>
+<span class="c-prompt">$</span> docker exec -it cloudzilla /app/cloudzilla-cli migrate
+<span class="c-comment"># open http://localhost:8080 → redirects to /setup</span></pre>
           </div>
         </div>
 
@@ -62,7 +64,7 @@ make dev`;
 <span class="c-prompt">$</span> make dev            <span class="c-comment"># templ + tailwind watch, hot reload</span>
 <span class="c-comment"># single binary — no git executable required</span>
 
-<span class="c-prompt">$</span> go build <span class="c-flag">-o</span> cloudzilla ./cmd/cloudzilla</pre>
+<span class="c-prompt">$</span> go build <span class="c-flag">-o</span> cloudzilla ./cmd/server</pre>
           </div>
         </div>
       </div>

@@ -103,10 +103,6 @@
   border-top: 1px solid hsl(var(--cz-border) / .08);
   padding: 22px 0;
 }
-.cz .status-foot .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-.cz .status-foot .lic { font-size: 12.5px; color: hsl(var(--cz-faint)); }
-.cz .status-foot .lic b { color: hsl(var(--cz-muted-foreground)); font-weight: 500; font-family: var(--cz-font-mono); }
-.cz .status-foot .made { font-size: 12.5px; color: hsl(var(--cz-faint)); font-family: var(--cz-font-mono); }
 
 /* ============================================================
    LOADING

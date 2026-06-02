@@ -1,5 +1,6 @@
 ---
 import LandingLayout from '../layouts/LandingLayout.astro';
+import FooterMeta from '../components/FooterMeta.astro';
 import '../styles/status.css';
 // Intentionally minimal chrome (brand only, no full nav/footer) so users
 // aren't invited to navigate away mid-boot. This is a static demo of the
@@ -36,8 +37,7 @@ import '../styles/status.css';
 
     <footer class="status-foot">
       <div class="wrap">
-        <span class="lic">Licensed under <b>BSL 1.1</b>.</span>
-        <span class="made">© 2026 Cloudzilla · built with Go + HTMX</span>
+        <FooterMeta />
       </div>
     </footer>
   </div>

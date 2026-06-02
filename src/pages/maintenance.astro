@@ -1,5 +1,6 @@
 ---
 import LandingLayout from '../layouts/LandingLayout.astro';
+import FooterMeta from '../components/FooterMeta.astro';
 import { LINKS } from '../consts';
 import '../styles/status.css';
 // Slim brand-only chrome (no full nav) — during real downtime the rest of
@@ -50,8 +51,7 @@ import '../styles/status.css';
 
     <footer class="status-foot">
       <div class="wrap">
-        <span class="lic">Licensed under <b>BSL 1.1</b>.</span>
-        <span class="made">© 2026 Cloudzilla · built with Go + HTMX</span>
+        <FooterMeta />
       </div>
     </footer>
   </div>

@@ -1,5 +1,6 @@
 ---
 import { LINKS } from '../../consts';
+import FooterMeta from '../FooterMeta.astro';
 ---
 <footer class="footer">
   <div class="wrap">
@@ -33,8 +34,7 @@ import { LINKS } from '../../consts';
       </div>
     </div>
     <div class="footer-bottom">
-      <span class="lic">Licensed under <b>BSL 1.1</b>.</span>
-      <span class="made">© 2026 Cloudzilla · built with Go + HTMX</span>
+      <FooterMeta />
     </div>
   </div>
 </footer>

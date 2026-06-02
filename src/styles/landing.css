@@ -467,10 +467,7 @@
 .cz .footer-col h5 { font-family: var(--cz-font-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: hsl(var(--cz-faint)); margin: 0 0 16px; font-weight: 500; }
 .cz .footer-col a { display: block; font-size: 13.5px; color: hsl(var(--cz-muted-foreground)); padding: 5px 0; transition: color .15s; }
 .cz .footer-col a:hover { color: hsl(var(--cz-fg)); }
-.cz .footer-bottom { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-top: 26px; border-top: 1px solid hsl(var(--cz-border) / .08); }
-.cz .footer-bottom .lic { font-size: 13px; color: hsl(var(--cz-faint)); }
-.cz .footer-bottom .lic b { color: hsl(var(--cz-muted-foreground)); font-weight: 500; font-family: var(--cz-font-mono); }
-.cz .footer-bottom .made { font-size: 13px; color: hsl(var(--cz-faint)); font-family: var(--cz-font-mono); }
+.cz .footer-bottom { padding-top: 26px; border-top: 1px solid hsl(var(--cz-border) / .08); }
 
 /* ============================================================
    CHANGELOG

@@ -39,6 +39,7 @@ function init() {
     canvas.style.width = `${W}px`;
     canvas.style.height = `${H}px`;
     ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
+    buildClearCanvas();
   }
   resize();
   window.addEventListener('resize', resize);
@@ -57,10 +58,10 @@ function init() {
       ry: b.height * 0.48,
     };
   }
-  computeClearShape();
-  window.addEventListener('resize', computeClearShape);
-  window.addEventListener('load', computeClearShape);
-  setTimeout(computeClearShape, 600); // after webfonts settle
+  computeClearShape(); buildClearCanvas();
+  window.addEventListener('resize', () => { computeClearShape(); buildClearCanvas(); });
+  window.addEventListener('load', () => { computeClearShape(); buildClearCanvas(); });
+  setTimeout(() => { computeClearShape(); buildClearCanvas(); }, 600); // after webfonts settle
 
   const pointer = { x: W * 0.5, y: H * 0.4, mx: W * 0.5, my: H * 0.4, k: 0, lastMove: -1e9 };
   window.addEventListener('mousemove', (e) => {
@@ -129,30 +130,57 @@ function init() {
     }
   }
 
-  function drawClearing() {
-    if (!clearShape) return;
+  let clearCanvas: HTMLCanvasElement | null = null;
+  function buildClearCanvas() {
+    if (!clearShape) { clearCanvas = null; return; }
     const s = clearShape;
+    const c = document.createElement('canvas');
+    c.width = W * dpr;
+    c.height = H * dpr;
+    const cx = c.getContext('2d');
+    if (!cx) { clearCanvas = null; return; }
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    cx.filter = 'blur(24px)';      // applied ONCE, not per frame
+    cx.fillStyle = '#000';
+    cx.beginPath();
+    cx.ellipse(s.cx, s.cy, s.rx, s.ry, 0, 0, Math.PI * 2);
+    cx.fill();
+    clearCanvas = c;
+  }
+
+  function drawClearing() {
+    if (!clearCanvas) return;
     ctx!.save();
     ctx!.globalCompositeOperation = 'destination-out';
-    ctx!.filter = 'blur(24px)';
-    ctx!.fillStyle = '#000';
-    ctx!.beginPath();
-    ctx!.ellipse(s.cx, s.cy, s.rx, s.ry, 0, 0, Math.PI * 2);
-    ctx!.fill();
+    ctx!.drawImage(clearCanvas, 0, 0, W, H);
     ctx!.restore();
   }
 
+  let visible = true;
+  let raf = 0;
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver((entries) => {
+      visible = entries[0].isIntersecting;
+      if (visible && !raf) raf = requestAnimationFrame(frame);
+    }, { threshold: 0 }).observe(hero!);
+  }
   function frame(now: number) {
-    requestAnimationFrame(frame);
+    if (!visible) { raf = 0; return; }
+    raf = requestAnimationFrame(frame);
     ctx!.clearRect(0, 0, W, H);
     drawDots(now);
     drawClearing();
   }
-  requestAnimationFrame(frame);
+  raf = requestAnimationFrame(frame);
 }
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
-} else {
-  init();
+function start() {
+  const ric = (window as any).requestIdleCallback as
+    | ((cb: () => void, opts?: { timeout: number }) => void)
+    | undefined;
+  if (ric) ric(init, { timeout: 1000 });
+  else setTimeout(init, 200);
 }
+
+if (document.readyState === 'complete') start();
+else window.addEventListener('load', start, { once: true });

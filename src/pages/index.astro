@@ -9,8 +9,36 @@ import Screenshots from '../components/landing/Screenshots.astro';
 import RoadmapPreview from '../components/landing/RoadmapPreview.astro';
 import CTA from '../components/landing/CTA.astro';
 import Footer from '../components/landing/Footer.astro';
+import { SITE, LINKS } from '../consts';
+
+const description =
+  'Cloudzilla is a minimal, self-hosted Git forge — a single binary with no external runtime dependencies. Self-host Git hosting, pull requests, code review, and issues as an open-source GitHub alternative.';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'SoftwareApplication',
+      name: SITE.name,
+      description,
+      applicationCategory: 'DeveloperApplication',
+      operatingSystem: 'Linux, Docker',
+      url: 'https://cloudzilla.dev/',
+      sameAs: [LINKS.github],
+      license: 'https://opensource.org/licenses/MIT',
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    },
+    {
+      '@type': 'WebSite',
+      name: SITE.name,
+      url: 'https://cloudzilla.dev/',
+      sameAs: [LINKS.github],
+    },
+  ],
+};
 ---
-<LandingLayout>
+<LandingLayout description={description}>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
   <Nav />
   <main id="main">
     <Hero />

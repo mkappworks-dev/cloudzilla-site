@@ -30,6 +30,8 @@ function init() {
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
   let W = 0;
   let H = 0;
+  let clearShape: { cx: number; cy: number; rx: number; ry: number } | null = null;
+  let clearCanvas: HTMLCanvasElement | null = null;
   function resize() {
     const r = hero!.getBoundingClientRect();
     W = Math.max(1, Math.round(r.width));
@@ -45,7 +47,6 @@ function init() {
   window.addEventListener('resize', resize);
 
   /* soft "no-go" oval, measured from the real hero content box */
-  let clearShape: { cx: number; cy: number; rx: number; ry: number } | null = null;
   function computeClearShape() {
     const el = hero!.querySelector<HTMLElement>('.manifesto');
     if (!el) { clearShape = null; return; }
@@ -130,7 +131,6 @@ function init() {
     }
   }
 
-  let clearCanvas: HTMLCanvasElement | null = null;
   function buildClearCanvas() {
     if (!clearShape) { clearCanvas = null; return; }
     const s = clearShape;

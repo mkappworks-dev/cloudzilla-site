@@ -19,6 +19,10 @@ interface CmdkItem {
 
 const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+/* slugify heading text into a stable id fragment (shared by the sub-nav
+   builder and the command palette so generated h3 ids always match) */
+const slug = (s: string) => s.toLowerCase().replace(/[^\w]+/g, '-').replace(/(^-|-$)/g, '');
+
 /* ---------- scroll-spy across the section nav ---------- */
 function wireSpy() {
   const sections = Array.from(document.querySelectorAll<HTMLElement>('.docs-section[id]'));
@@ -54,16 +58,81 @@ function wireSpy() {
   sections.forEach((s) => io.observe(s));
 }
 
+/* ---------- expandable section nav ----------
+   A section link that contains sub-headings (h3) gets a chevron and a
+   nested list of those sub-sections. Clicking the link expands it (and
+   navigates to the section); clicking just the chevron toggles without
+   navigating. The sub-nav is derived from the live article, so it stays
+   in sync with the content automatically. */
+function wireSubnav() {
+  document.querySelectorAll<HTMLAnchorElement>(".docs-nav .dn-link[href^='#']").forEach((link) => {
+    const id = (link.getAttribute('href') ?? '').slice(1);
+    const sec = document.getElementById(id);
+    if (!sec) return;
+    const subs = Array.from(sec.querySelectorAll<HTMLElement>('h3'));
+    if (!subs.length) return;
+
+    link.classList.add('has-sub');
+    const chev = document.createElement('span');
+    chev.className = 'dn-chev';
+    chev.setAttribute('aria-hidden', 'true');
+    chev.innerHTML =
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
+    link.appendChild(chev);
+
+    const list = document.createElement('div');
+    list.className = 'dn-sub';
+    subs.forEach((h3) => {
+      if (!h3.id) h3.id = id + '-' + slug(h3.textContent ?? '');
+      const a = document.createElement('a');
+      a.className = 'dn-sublink';
+      a.href = '#' + h3.id;
+      a.textContent = (h3.textContent ?? '').trim();
+      list.appendChild(a);
+    });
+    link.after(list);
+
+    link.addEventListener('click', (e) => {
+      if (chev.contains(e.target as Node)) {
+        e.preventDefault();              // chevron: toggle only, no navigation
+        link.classList.toggle('open');
+      } else {
+        link.classList.add('open');      // link body: navigate and expand
+      }
+    });
+  });
+
+  // open the section that matches the current hash (deep link to a sub-section)
+  const hash = decodeURIComponent(location.hash.slice(1));
+  if (hash) {
+    const target = document.getElementById(hash);
+    const sec = target?.closest<HTMLElement>('.docs-section');
+    if (sec) {
+      document
+        .querySelector<HTMLElement>(`.docs-nav .dn-link.has-sub[href='#${CSS.escape(sec.id)}']`)
+        ?.classList.add('open');
+      if (target && target.tagName === 'H3') {
+        document
+          .querySelector<HTMLElement>(`.dn-sublink[href='#${CSS.escape(hash)}']`)
+          ?.classList.add('active');
+      }
+    }
+  }
+}
+
 /* ---------- mobile section-nav toggle ---------- */
 function wireMobileNav() {
   const nav = document.querySelector<HTMLElement>('.docs-nav');
   const bar = document.querySelector<HTMLElement>('.docs-mobile-bar');
-  if (!nav || !bar) return;
+  const inner = nav?.querySelector<HTMLElement>('.docs-nav-inner');
+  if (!nav || !bar || !inner) return;
   bar.addEventListener('click', () => nav.classList.toggle('open'));
-  nav.querySelectorAll<HTMLAnchorElement>('.dn-link').forEach((a) => {
-    a.addEventListener('click', () => {
-      if (window.matchMedia('(max-width: 860px)').matches) nav.classList.remove('open');
-    });
+  // Close the mobile drawer after picking a destination, but NOT when
+  // expanding a parent section (the user is drilling in, keep it open).
+  inner.addEventListener('click', (e) => {
+    const link = (e.target as HTMLElement).closest<HTMLElement>('.dn-link, .dn-sublink');
+    if (!link || link.classList.contains('has-sub')) return;
+    if (window.matchMedia('(max-width: 860px)').matches) nav.classList.remove('open');
   });
 }
 
@@ -82,8 +151,6 @@ function wireCmdk() {
     page: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>',
     link: '<path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/>',
   };
-
-  const slug = (s: string) => s.toLowerCase().replace(/[^\w]+/g, '-').replace(/(^-|-$)/g, '');
 
   /* map each in-page section to its sidebar category (the .dn-group label),
      so palette results group the same way the sidebar does. */
@@ -236,6 +303,7 @@ function wireCmdk() {
 }
 
 function init() {
+  wireSubnav();
   wireSpy();
   wireMobileNav();
   wireCmdk();

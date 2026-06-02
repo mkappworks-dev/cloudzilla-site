@@ -41,6 +41,31 @@
   background: hsl(var(--cz-border) / .06);
 }
 
+/* ---------- expandable sub-sections ---------- */
+.cz .dn-link.has-sub { display: flex; align-items: center; gap: 8px; }
+.cz .dn-link .dn-chev {
+  margin-left: auto; display: inline-flex; padding: 3px; margin-right: -3px;
+  color: hsl(var(--cz-faint)); flex-shrink: 0;
+  transition: transform .2s var(--cz-ease), color .15s;
+}
+.cz .dn-link .dn-chev svg { width: 13px; height: 13px; }
+.cz .dn-link:hover .dn-chev { color: hsl(var(--cz-muted-foreground)); }
+.cz .dn-link.open .dn-chev { transform: rotate(180deg); }
+.cz .dn-sub {
+  max-height: 0; overflow: hidden;
+  margin: 2px 0 4px 11px; border-left: 1px solid hsl(var(--cz-border) / .1);
+  transition: max-height .26s var(--cz-ease);
+}
+.cz .dn-link.open + .dn-sub { max-height: 360px; }
+.cz .dn-sublink {
+  display: block; padding: 6px 10px 6px 14px; margin-left: -1px;
+  font-size: 12.5px; color: hsl(var(--cz-faint));
+  border-left: 2px solid transparent;
+  transition: color .15s, border-color .15s;
+}
+.cz .dn-sublink:hover { color: hsl(var(--cz-muted-foreground)); }
+.cz .dn-sublink.active { color: hsl(var(--cz-fg)); border-left-color: hsl(var(--cz-primary)); }
+
 /* ---------- mobile sidebar toggle ---------- */
 .cz .docs-mobile-bar { display: none; }
 

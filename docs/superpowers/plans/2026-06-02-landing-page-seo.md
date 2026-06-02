@@ -493,6 +493,8 @@ Call `buildClearCanvas()` wherever `computeClearShape()` is called (after each `
 
 (Replace the existing `computeClearShape()` / listener lines accordingly. Also call `buildClearCanvas()` at the end of `resize()` since the canvas size changed.)
 
+**IMPORTANT (TDZ):** `resize()` is invoked early in `init()`, *before* the original `let clearShape`/`let clearCanvas` declarations. Since `resize()` now calls `buildClearCanvas()` (which reads `clearShape`), you MUST hoist the `let clearShape: {...} | null = null;` and `let clearCanvas: HTMLCanvasElement | null = null;` declarations to **above** the first `resize()` call (e.g. right after `let W = 0; let H = 0;`). A null-guard does not help — reading a `let` still in its temporal dead zone throws `ReferenceError` before the guard runs, which would abort `init()` and freeze the animation.
+
 - [ ] **Step 3: Pause the rAF loop when the hero is off-screen**
 
 Replace the frame loop:

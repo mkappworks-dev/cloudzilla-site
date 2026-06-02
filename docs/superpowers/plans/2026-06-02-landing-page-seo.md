@@ -295,7 +295,7 @@ A self-contained dark card matching the brand. Body is exactly 1200×630, dark b
          display:flex; flex-direction:column; justify-content:center; padding:96px;
          background-image:radial-gradient(ellipse at 30% 0%, rgba(74,222,128,.10), transparent 60%); }
   .brand { display:flex; align-items:center; gap:20px; margin-bottom:40px; }
-  .brand svg { width:64px; height:64px; color:#4ade80; }
+  .brand svg { width:64px; height:64px; color:#ffffff; }
   .brand span { font-size:40px; font-weight:600; letter-spacing:-.02em; }
   h1 { font-size:76px; font-weight:600; line-height:1.05; letter-spacing:-.03em; max-width:900px; }
   p { margin-top:32px; font-size:30px; color:#8f8f8f; font-family:'Geist Mono',ui-monospace,monospace; }

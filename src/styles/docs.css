@@ -60,7 +60,7 @@
   margin: 0 0 8px; max-width: 64ch; text-wrap: pretty;
 }
 
-.cz .docs-section { padding-top: clamp(40px, 5vw, 60px); scroll-margin-top: 78px; }
+.cz .docs-section { padding-top: clamp(14px, 1.8vw, 22px); scroll-margin-top: 78px; }
 .cz .docs-section > h2 {
   font-size: 1.55rem; font-weight: 600; letter-spacing: -.022em;
   margin: 0 0 6px; padding-bottom: 14px;

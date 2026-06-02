@@ -24,11 +24,11 @@ bun run dev      # start the dev server at http://localhost:4321
 
 ## Scripts
 
-| Command | Description |
-| --- | --- |
-| `bun run dev` | Start the local dev server with hot reload. |
-| `bun run build` | Build the static site to `./dist`. |
-| `bun run preview` | Preview the production build locally. |
+| Command           | Description                                 |
+| ----------------- | ------------------------------------------- |
+| `bun run dev`     | Start the local dev server with hot reload. |
+| `bun run build`   | Build the static site to `./dist`.          |
+| `bun run preview` | Preview the production build locally.       |
 
 ## Project structure
 

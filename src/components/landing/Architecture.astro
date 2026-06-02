@@ -1,0 +1,46 @@
+---
+---
+<section class="section-pad divide" id="architecture">
+  <div class="wrap">
+    <div class="arch-head reveal">
+      <span class="eyebrow">Architecture</span>
+      <h2>Server-rendered, single binary, fast.</h2>
+    </div>
+    <div class="arch">
+      <div class="arch-claims reveal">
+        <div class="arch-claim">
+          <span class="ac-num">01</span>
+          <div><h4>Single binary, zero runtime deps</h4><p>One static Go binary. PostgreSQL is the only thing it talks to — trivial to operate next to GitLab or GitHub EE.</p></div>
+        </div>
+        <div class="arch-claim">
+          <span class="ac-num">02</span>
+          <div><h4>Self-hostable, BSL 1.1 licensed</h4><p>Runs entirely on your own infrastructure — no SaaS, no tenant you don't control. Source-available under the Business Source License 1.1, so you keep full data sovereignty.</p></div>
+        </div>
+        <div class="arch-claim">
+          <span class="ac-num">03</span>
+          <div><h4>Fast &amp; lightweight</h4><p>Go + PostgreSQL + HTMX. Server-rendered HTML over the wire — no heavy SPA to download and hydrate.</p></div>
+        </div>
+      </div>
+      <div class="reveal" data-d="1">
+        <div class="arch-diagram">
+          <div class="dg-row dg-inputs">
+            <div class="dg-node sm"><span class="dg-k mono">SSH</span><span class="dg-p mono">:2222</span></div>
+            <div class="dg-node sm"><span class="dg-k mono">HTTP</span><span class="dg-p mono">:8080</span></div>
+          </div>
+          <div class="dg-arrows" aria-hidden="true"><span></span><span></span></div>
+          <div class="dg-node dg-core">
+            <div class="dg-core-top"><span class="dg-name">cloudzilla</span><span class="pill green">single binary</span></div>
+            <div class="dg-core-sub mono">one static Go binary · go-git · templ · HTMX</div>
+            <div class="dg-chips"><span class="mono">git</span><span class="mono">ssh</span><span class="mono">web</span><span class="mono">api</span><span class="mono">jobs</span></div>
+          </div>
+          <div class="dg-arrows one" aria-hidden="true"><span></span></div>
+          <div class="dg-node dg-db">
+            <span class="dg-k mono">PostgreSQL</span>
+            <span class="dg-desc">data + full-text search (tsvector)</span>
+          </div>
+          <p class="dg-note mono">no external runtime — nothing else to operate</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

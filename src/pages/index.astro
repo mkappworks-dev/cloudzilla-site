@@ -1,0 +1,25 @@
+---
+import LandingLayout from '../layouts/LandingLayout.astro';
+import Nav from '../components/landing/Nav.astro';
+import Hero from '../components/landing/Hero.astro';
+import FeatureGrid from '../components/landing/FeatureGrid.astro';
+import Architecture from '../components/landing/Architecture.astro';
+import Quickstart from '../components/landing/Quickstart.astro';
+import Screenshots from '../components/landing/Screenshots.astro';
+import RoadmapPreview from '../components/landing/RoadmapPreview.astro';
+import CTA from '../components/landing/CTA.astro';
+import Footer from '../components/landing/Footer.astro';
+---
+<LandingLayout>
+  <Nav />
+  <main id="main">
+    <Hero />
+    <FeatureGrid />
+    <Architecture />
+    <Quickstart />
+    <Screenshots />
+    <RoadmapPreview />
+    <CTA />
+  </main>
+  <Footer />
+</LandingLayout>

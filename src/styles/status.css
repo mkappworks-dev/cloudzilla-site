@@ -1,0 +1,154 @@
+/* ============================================================
+   Cloudzilla — status pages (404 / 500 / loading)
+   Slim centered chrome on the shared dark + green system.
+   Ported from the design handoff (cloudzilla-status.css):
+   tokens re-scoped to --cz-* and selectors nested under .cz so
+   they layer cleanly on landing.css (nav, footer, btn, grid-fade).
+   ============================================================ */
+
+.cz .status-page { min-height: 100vh; display: flex; flex-direction: column; }
+
+/* slim header — brand only (loading) */
+.cz .status-head {
+  border-bottom: 1px solid hsl(var(--cz-border) / .08);
+  background: hsl(0 0% 0% / .6);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+}
+.cz .status-head .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+
+/* centered stage with the hero grid backdrop */
+.cz .status-main { flex: 1; display: grid; place-items: center; position: relative; overflow: hidden; padding: clamp(48px, 9vw, 110px) 0; }
+.cz .status-main .grid-fade {
+  inset: 0; height: 100%;
+  -webkit-mask-image: radial-gradient(82% 70% at 50% 42%, #000 8%, transparent 72%);
+          mask-image: radial-gradient(82% 70% at 50% 42%, #000 8%, transparent 72%);
+}
+.cz .status-inner { position: relative; z-index: 1; text-align: center; padding: 0 var(--cz-gutter); max-width: 660px; }
+
+/* status badge */
+.cz .status-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--cz-font-mono); font-size: 11.5px; letter-spacing: .08em;
+  text-transform: uppercase; line-height: 1;
+  padding: 6px 11px; border-radius: 999px; margin-bottom: 26px;
+  border: 1px solid hsl(var(--cz-border) / .14); color: hsl(var(--cz-muted-foreground));
+  background: hsl(var(--cz-secondary));
+}
+.cz .status-badge .sb-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.cz .status-badge.err  { color: hsl(var(--cz-fg)); border-color: hsl(var(--cz-border) / .18); background: hsl(var(--cz-secondary)); }
+.cz .status-badge.ok   { color: hsl(var(--cz-primary)); border-color: hsl(var(--cz-primary) / .3); background: hsl(var(--cz-primary) / .08); }
+.cz .status-badge.warn { color: hsl(var(--cz-amber)); border-color: hsl(var(--cz-amber) / .3); background: hsl(var(--cz-amber) / .08); }
+
+/* giant status-code glyph — sans (not mono) to avoid the slashed zero */
+.cz .status-code {
+  font-family: var(--cz-font-sans); font-weight: 700;
+  font-feature-settings: normal; font-variant-numeric: lining-nums;
+  font-size: clamp(5.5rem, 20vw, 12rem); line-height: .86;
+  letter-spacing: -.04em; margin: 0;
+  color: transparent;
+  -webkit-text-stroke: 1.5px hsl(var(--cz-border) / .5);
+  position: relative;
+}
+.cz .status-code .glow { -webkit-text-stroke: 0; color: hsl(var(--cz-fg)); }
+
+.cz .status-h1 {
+  font-size: clamp(1.5rem, 3.6vw, 2.2rem); line-height: 1.08; letter-spacing: -.025em;
+  font-weight: 600; margin: 18px 0 0; text-wrap: balance;
+}
+.cz .status-sub {
+  font-size: 1.02rem; line-height: 1.6; color: hsl(var(--cz-muted-foreground));
+  margin: 14px auto 0; max-width: 46ch; text-wrap: pretty;
+}
+
+/* terminal detail — borrows the forge's terminal look */
+.cz .status-term {
+  margin: 30px auto 0; max-width: 460px; text-align: left;
+  border: 1px solid hsl(var(--cz-border) / .14); border-radius: 9px;
+  background: hsl(var(--cz-card)); overflow: hidden;
+  box-shadow: 0 24px 60px -38px rgba(0,0,0,.9);
+}
+.cz .status-term .st-bar {
+  display: flex; align-items: center; gap: 7px;
+  padding: 9px 13px; border-bottom: 1px solid hsl(var(--cz-border) / .1);
+  background: hsl(var(--cz-card-raised));
+}
+.cz .status-term .st-bar i { width: 9px; height: 9px; border-radius: 50%; background: hsl(var(--cz-border) / .18); }
+.cz .status-term .st-bar .st-name { margin-left: 6px; font-family: var(--cz-font-mono); font-size: 11.5px; color: hsl(var(--cz-faint)); }
+.cz .status-term .st-body {
+  padding: 14px 16px; font-family: var(--cz-font-mono); font-size: 12.5px; line-height: 1.85;
+}
+.cz .status-term .st-body .ln { white-space: pre-wrap; word-break: break-word; }
+.cz .status-term .p { color: hsl(var(--cz-primary)); user-select: none; }
+.cz .status-term .dim { color: hsl(var(--cz-faint)); }
+.cz .status-term .err { color: hsl(var(--cz-amber)); }
+.cz .status-term .white { color: hsl(var(--cz-fg)); }
+.cz .status-term .ok { color: hsl(var(--cz-primary)); }
+
+/* actions */
+.cz .status-cta { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 30px; }
+
+/* helpful links row */
+.cz .status-links { display: flex; flex-wrap: wrap; gap: 6px 22px; justify-content: center; margin-top: 28px; }
+.cz .status-links a {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 13.5px; color: hsl(var(--cz-muted-foreground));
+  transition: color .15s;
+}
+.cz .status-links a:hover { color: hsl(var(--cz-fg)); }
+.cz .status-links a svg { width: 14px; height: 14px; color: hsl(var(--cz-faint)); }
+
+/* slim footer (loading) */
+.cz .status-foot {
+  border-top: 1px solid hsl(var(--cz-border) / .08);
+  padding: 22px 0;
+}
+
+/* ============================================================
+   LOADING
+   ============================================================ */
+.cz .load-mark { position: relative; width: 78px; height: 78px; margin: 0 auto 30px; }
+.cz .load-mark .lm-logo {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  color: hsl(var(--cz-fg));
+}
+.cz .load-mark .lm-logo svg { width: 34px; height: 34px; }
+.cz .load-ring {
+  position: absolute; inset: 0; border-radius: 50%;
+  border: 2px solid hsl(var(--cz-border) / .1);
+  border-top-color: hsl(var(--cz-primary));
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cz .load-ring { animation: cz-load-spin 1s linear infinite; }
+  .cz .load-mark .lm-logo { animation: cz-load-pulse 1.8s var(--cz-ease) infinite; }
+}
+@keyframes cz-load-spin { to { transform: rotate(360deg); } }
+@keyframes cz-load-pulse { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+
+/* indeterminate progress bar */
+.cz .load-bar {
+  width: min(360px, 80vw); height: 3px; margin: 28px auto 0;
+  border-radius: 999px; overflow: hidden;
+  background: hsl(var(--cz-border) / .1); position: relative;
+}
+.cz .load-bar::after {
+  content: ""; position: absolute; top: 0; bottom: 0; left: -38%;
+  width: 38%; border-radius: 999px;
+  background: linear-gradient(90deg, transparent, hsl(var(--cz-primary)), transparent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cz .load-bar::after { animation: cz-load-slide 1.25s var(--cz-ease) infinite; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cz .load-bar::after { left: 0; width: 100%; background: hsl(var(--cz-primary) / .5); }
+}
+@keyframes cz-load-slide { 0% { left: -38%; } 100% { left: 100%; } }
+
+.cz .load-status {
+  margin-top: 22px; font-family: var(--cz-font-mono); font-size: 13px;
+  color: hsl(var(--cz-muted-foreground)); min-height: 1.4em;
+}
+.cz .load-status .lc { color: hsl(var(--cz-primary)); }
+.cz .load-status .cur { display: inline-block; width: 7px; height: 13px; transform: translateY(2px); background: hsl(var(--cz-primary)); margin-left: 1px; }
+@media (prefers-reduced-motion: no-preference) { .cz .load-status .cur { animation: cz-blink 1.05s steps(1) infinite; } }
+@keyframes cz-blink { 50% { opacity: 0; } }

@@ -1,0 +1,40 @@
+---
+import { LINKS } from '../../consts';
+import FooterMeta from '../FooterMeta.astro';
+---
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <span class="brand">
+          <span class="logo" aria-hidden="true"><svg viewBox="11 9 44 44" fill="currentColor"><circle cx="22" cy="36" r="9"/><circle cx="32" cy="28" r="11"/><circle cx="44" cy="36" r="9"/><rect x="22" y="36" width="22" height="9" rx="4.5"/></svg></span>
+          <span class="name">cloudzilla</span>
+        </span>
+        <p>A minimal, self-hosted Git forge. Single binary, no external runtime dependencies.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Product</h5>
+        <a href="/#features">Features</a>
+        <a href="/#architecture">Architecture</a>
+        <a href="/#quickstart">Quickstart</a>
+        <a href="/#roadmap">Roadmap</a>
+      </div>
+      <div class="footer-col">
+        <h5>Source</h5>
+        <a href={LINKS.github} target="_blank" rel="noopener">GitHub</a>
+        <a href={`${LINKS.github}/releases`} target="_blank" rel="noopener">Releases</a>
+        <a href={`${LINKS.github}/issues`} target="_blank" rel="noopener">Issues</a>
+        <a href={`${LINKS.github}/discussions`} target="_blank" rel="noopener">Discussions</a>
+      </div>
+      <div class="footer-col">
+        <h5>Resources</h5>
+        <a href={LINKS.docs}>Docs</a>
+        <a href={`${LINKS.github}/blob/main/LICENSE`} target="_blank" rel="noopener">License</a>
+        <a href={LINKS.changelog}>Changelog</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <FooterMeta />
+    </div>
+  </div>
+</footer>

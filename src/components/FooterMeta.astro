@@ -1,0 +1,65 @@
+---
+// Shared footer bottom-bar: license/copyright (left), attribution (center),
+// social links (right). Reused by the landing Footer and the slim status-page
+// footers so all footers stay in sync. The outer chrome (border/padding/
+// container width) is owned by each caller; this component owns the 3-zone grid.
+import { LINKS } from '../consts';
+
+const socials = [
+  {
+    label: 'GitHub',
+    href: LINKS.github,
+    viewBox: '0 0 16 16',
+    icon: 'M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.69-.01-1.36-2.22.48-2.69-1.07-2.69-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.81.06 1.23.83 1.23.83.71 1.22 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38C13.71 14.53 16 11.54 16 8c0-4.42-3.58-8-8-8z',
+  },
+  {
+    label: 'X',
+    href: 'https://www.x.com/mkappworks',
+    viewBox: '0 0 24 24',
+    icon: 'M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z',
+  },
+  {
+    label: 'Discord',
+    href: 'https://discord.gg/g2xKWJcF',
+    viewBox: '0 0 24 24',
+    icon: 'M19.27 5.33C17.94 4.71 16.5 4.26 15 4a.09.09 0 00-.07.03c-.18.33-.39.76-.53 1.09a16.09 16.09 0 00-4.8 0c-.14-.34-.35-.76-.54-1.09-.01-.02-.04-.03-.07-.03-1.5.26-2.93.71-4.27 1.33-.01 0-.02.01-.03.02-2.72 4.07-3.47 8.03-3.1 11.95 0 .02.01.04.03.05 1.8 1.32 3.53 2.12 5.24 2.65.03.01.06 0 .07-.02.4-.55.76-1.13 1.07-1.74.02-.04 0-.08-.04-.09-.57-.22-1.11-.48-1.64-.78-.04-.02-.04-.08-.01-.11.11-.08.22-.17.33-.25.02-.02.05-.02.07-.01 3.44 1.57 7.15 1.57 10.55 0 .02-.01.05 0 .07.01.11.09.22.17.33.26.04.03.04.09-.01.11-.52.31-1.07.56-1.64.78-.04.01-.05.06-.04.09.32.61.68 1.19 1.07 1.74.03.01.06.02.09.01 1.72-.53 3.45-1.33 5.25-2.65.02-.01.03-.03.03-.05.44-4.53-.73-8.46-3.1-11.95-.01-.01-.02-.02-.04-.02zM8.52 14.91c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.9.96 1.89 2.12 0 1.17-.84 2.12-1.89 2.12zm6.97 0c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.9.96 1.89 2.12 0 1.17-.83 2.12-1.89 2.12z',
+  },
+  {
+    label: 'YouTube',
+    href: 'https://www.youtube.com/@mkappworks',
+    viewBox: '0 0 24 24',
+    icon: 'M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z',
+  },
+];
+---
+<div class="footer-meta">
+  <span class="lic">
+    <span class="logo" aria-hidden="true"><svg viewBox="11 9 44 44" fill="currentColor"><circle cx="22" cy="36" r="9"/><circle cx="32" cy="28" r="11"/><circle cx="44" cy="36" r="9"/><rect x="22" y="36" width="22" height="9" rx="4.5"/></svg></span>
+    © 2026 Cloudzilla. Licensed under BSL 1.1.
+  </span>
+  <span class="made">Created by <a href="https://mkappworks.com/" target="_blank" rel="noopener">mkappworks</a></span>
+  <div class="footer-socials" aria-label="Social links">
+    {socials.map((s) => (
+      <a href={s.href} target="_blank" rel="noopener" aria-label={s.label}>
+        <svg width="16" height="16" viewBox={s.viewBox} fill="currentColor" aria-hidden="true"><path d={s.icon}/></svg>
+      </a>
+    ))}
+  </div>
+</div>
+
+<style>
+  .footer-meta { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px 24px; }
+  .lic { justify-self: start; display: inline-flex; align-items: center; gap: 10px; font-size: 13px; color: hsl(var(--cz-faint)); }
+  .lic .logo { flex-shrink: 0; display: grid; place-items: center; color: hsl(var(--cz-fg)); }
+  .lic .logo svg { width: 19px; height: 19px; }
+  .made { justify-self: center; font-size: 13px; color: hsl(var(--cz-faint)); font-family: var(--cz-font-mono); }
+  .made a { color: hsl(var(--cz-muted-foreground)); transition: color .15s; }
+  .made a:hover { color: hsl(var(--cz-fg)); }
+  .footer-socials { justify-self: end; display: inline-flex; align-items: center; gap: 8px; }
+  .footer-socials a { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 7px; color: hsl(var(--cz-faint)); transition: color .15s, background .15s; }
+  .footer-socials a:hover { color: hsl(var(--cz-fg)); background: hsl(var(--cz-card-raised)); }
+  @media (max-width: 560px) {
+    .footer-meta { grid-template-columns: 1fr; justify-items: center; text-align: center; gap: 18px; }
+    .lic, .made, .footer-socials { justify-self: center; }
+  }
+</style>

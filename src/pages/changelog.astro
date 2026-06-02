@@ -1,0 +1,71 @@
+---
+import LandingLayout from '../layouts/LandingLayout.astro';
+import Nav from '../components/landing/Nav.astro';
+import Footer from '../components/landing/Footer.astro';
+import { CHANGELOG, LINKS } from '../consts';
+
+// mono-uppercase group label + the tinted icon chip for each change kind
+const GROUP_META = {
+  added: { label: 'Added', icon: '<path d="M12 5v14M5 12h14"/>', stroke: '2.4' },
+  improved: { label: 'Improved', icon: '<path d="M13 2L3 14h7l-1 8 10-12h-7z"/>', stroke: '2.2' },
+  fixed: { label: 'Fixed', icon: '<path d="M20 6L9 17l-5-5"/>', stroke: '2.4' },
+} as const;
+---
+<LandingLayout title="Changelog" description="Release notes for Cloudzilla — a minimal, self-hosted Git forge. Every shipped change, newest first.">
+  <Nav />
+  <main id="main">
+    <!-- header -->
+    <section class="cl-head">
+      <div class="grid-fade" aria-hidden="true"></div>
+      <div class="wrap" style="position:relative">
+        <div class="hero-eyebrow"><span class="badge"><span class="dot"></span> v0.3.0 · alpha</span></div>
+        <h1 class="cl-title">Changelog</h1>
+        <p class="cl-sub">Every shipped change to Cloudzilla, newest first. No roadmap promises here — only what's actually in the binary you can pull today.</p>
+        <div class="cl-subscribe">
+          <a class="btn btn-secondary" href={`${LINKS.github}/releases`} target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            GitHub Releases
+          </a>
+          <a class="btn btn-secondary" href="/#roadmap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            See the roadmap
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- feed -->
+    <section class="cl-feed">
+      <div class="wrap">
+        {CHANGELOG.map((entry) => (
+          <article class="cl-entry reveal">
+            <div class="cl-meta">
+              <div class="cl-version">{entry.version}</div>
+              <div class="cl-date">{entry.date}</div>
+              <p class="cl-codename">{entry.codename}</p>
+              <div class="cl-tag"><span class={`pill ${entry.tag.tone === 'green' ? 'green' : 'gray'}`}>{entry.tag.label}</span></div>
+            </div>
+            <div class="cl-groups">
+              {entry.groups.map((group) => (
+                <div class={`cl-group cl-${group.kind}`}>
+                  <span class="cl-group-label">
+                    <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width={GROUP_META[group.kind].stroke} stroke-linecap="round" stroke-linejoin="round" set:html={GROUP_META[group.kind].icon} /></span>
+                    {GROUP_META[group.kind].label}
+                  </span>
+                  <ul class="cl-list">
+                    {group.items.map((item) => (
+                      <li><div set:html={item} /></li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </article>
+        ))}
+
+        <p class="cl-foot-note">Older internal builds aren't listed. Full history lives on <a href={`${LINKS.github}/releases`} target="_blank" rel="noopener">GitHub Releases</a>.</p>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</LandingLayout>

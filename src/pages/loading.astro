@@ -1,0 +1,48 @@
+---
+import LandingLayout from '../layouts/LandingLayout.astro';
+import FooterMeta from '../components/FooterMeta.astro';
+import '../styles/status.css';
+// Intentionally minimal chrome (brand only, no full nav/footer) so users
+// aren't invited to navigate away mid-boot. This is a static demo of the
+// interstitial; in the app, drive #load-line from real boot/health signals.
+---
+<LandingLayout title="Loading" description="Spinning up your forge.">
+  <div class="status-page">
+    <header class="status-head">
+      <div class="wrap">
+        <a class="brand" href="/" aria-label="Cloudzilla home">
+          <span class="logo" aria-hidden="true"><svg viewBox="11 9 44 44" fill="currentColor"><circle cx="22" cy="36" r="9"/><circle cx="32" cy="28" r="11"/><circle cx="44" cy="36" r="9"/><rect x="22" y="36" width="22" height="9" rx="4.5"/></svg></span>
+          <span class="name">cloudzilla</span>
+        </a>
+      </div>
+    </header>
+
+    <main id="main" class="status-main">
+      <div class="grid-fade" aria-hidden="true"></div>
+      <div class="status-inner">
+        <div class="load-mark" aria-hidden="true">
+          <span class="load-ring"></span>
+          <span class="lm-logo"><svg viewBox="11 9 44 44" fill="currentColor"><circle cx="22" cy="36" r="9"/><circle cx="32" cy="28" r="11"/><circle cx="44" cy="36" r="9"/><rect x="22" y="36" width="22" height="9" rx="4.5"/></svg></span>
+        </div>
+
+        <span class="status-badge ok"><span class="sb-dot"></span> Starting up</span>
+        <h1 class="status-h1">Spinning up your forge.</h1>
+        <p class="status-sub">One static binary, one database connection. This only takes a moment.</p>
+
+        <div class="load-bar" role="progressbar" aria-label="Loading"></div>
+
+        <p class="load-status" aria-live="polite"><span id="load-line">connecting to PostgreSQL</span><span class="cur"></span></p>
+      </div>
+    </main>
+
+    <footer class="status-foot">
+      <div class="wrap">
+        <FooterMeta />
+      </div>
+    </footer>
+  </div>
+</LandingLayout>
+
+<script>
+  import '../scripts/loading.ts';
+</script>

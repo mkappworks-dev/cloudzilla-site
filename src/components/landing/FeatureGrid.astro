@@ -1,0 +1,70 @@
+---
+import { LINKS } from '../../consts';
+---
+<section class="section-pad divide" id="features">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Everything a forge needs</span>
+      <h2>50+ features across identity, hosting, and collaboration.</h2>
+      <p>The familiar GitHub-style workflow — issues, pull requests, review, boards — without the operational weight. Grouped by what you'll actually reach for.</p>
+    </div>
+
+    <div class="feat-bento">
+      <article class="bento-tile b-hero b-2r b-2">
+        <div class="bt-top">
+          <span class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><path d="M6 8.5v7"/><path d="M18 9v6"/><circle cx="18" cy="6" r="2.5"/><path d="M11 6h4"/></svg></span>
+          <span class="pill green">core</span>
+        </div>
+        <div class="bt-text">
+          <h4>Pull requests &amp; review</h4>
+          <p>Fast-forward, merge, or squash. Draft PRs, auto-merge, conflict detection, inline review with one-click suggestions, and CODEOWNERS-based required approvals.</p>
+        </div>
+        <div class="bt-vis" aria-hidden="true">
+          <div class="pr-row"><span class="pr-branch mono">feature/ssh-auth</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg><span class="pr-branch mono">main</span><span class="pill green" style="margin-left:auto">Open</span></div>
+          <div class="pr-stat mono"><span class="add">+248</span> <span class="del">−31</span> <span class="dim">· 6 files · 2 approvals</span></div>
+        </div>
+      </article>
+      <article class="bento-tile b-2">
+        <span class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="8" r="2.5"/><path d="M6 8.5v7M18 10.5c0 3-3 3.5-6 3.5"/></svg></span>
+        <h4>Smart HTTP + SSH</h4>
+        <p>Built-in SSH server and smart HTTP transport — pure Go via go-git, no git executable on the box.</p>
+      </article>
+      <article class="bento-tile">
+        <span class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"/></svg></span>
+        <h4>Inline review</h4>
+        <p>Comment on the diff, suggest changes, approve.</p>
+      </article>
+      <article class="bento-tile">
+        <span class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="5" height="18" rx="1"/><rect x="10" y="3" width="5" height="12" rx="1"/><rect x="17" y="3" width="4" height="7" rx="1"/></svg></span>
+        <h4>Issues &amp; boards</h4>
+        <p>Labels, milestones, Kanban columns.</p>
+      </article>
+      <article class="bento-tile b-2">
+        <span class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span>
+        <h4>Full-text search</h4>
+        <p>Repos, issues, PRs, and users — powered by PostgreSQL tsvector, no extra service to run.</p>
+      </article>
+      <article class="bento-tile">
+        <span class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span>
+        <h4>SSO &amp; 2FA</h4>
+        <p>OAuth, TOTP, LDAP / SAML.</p>
+      </article>
+      <article class="bento-tile">
+        <span class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg></span>
+        <h4>Webhooks</h4>
+        <p>HMAC-signed, retried, logged.</p>
+      </article>
+      <article class="bento-tile b-2">
+        <span class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-3"/><path d="M9 3v6h6V3M7 14h2M7 17h6"/></svg></span>
+        <h4>Code browser &amp; blame</h4>
+        <p>Browse files, blame lines, read history and diffs with syntax highlighting.</p>
+      </article>
+      <article class="bento-tile b-2">
+        <span class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="3"/><circle cx="5" cy="18" r="2.5"/><circle cx="19" cy="18" r="2.5"/><path d="M12 10v3M9.5 16l-2-1M14.5 16l2-1"/></svg></span>
+        <h4>Orgs, roles &amp; permissions</h4>
+        <p>Group repos under orgs with three-tier, per-member access control.</p>
+      </article>
+      <a class="bento-more mono" href={LINKS.github} target="_blank" rel="noopener">+ 40 more across identity, hosting &amp; collaboration →</a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,380 @@
+---
+import LandingLayout from '../layouts/LandingLayout.astro';
+import Nav from '../components/landing/Nav.astro';
+import Footer from '../components/landing/Footer.astro';
+import CodeBlock from '../components/docs/CodeBlock.astro';
+import { LINKS } from '../consts';
+import '../styles/docs.css';
+
+// Code snippets: `copy` is the raw clipboard text, `html` is the
+// syntax-span markup injected via set:html. Defined here (JS strings) so
+// literal braces — e.g. the Caddyfile — never collide with Astro's `{ }`.
+const cbDocker = {
+  copy: `docker run -d --name cloudzilla \\
+  -p 8080:8080 -p 2222:2222 \\
+  -v cloudzilla_data:/data \\
+  -e CZ_DATABASE_DSN=postgres://cz:secret@db:5432/cloudzilla?sslmode=disable \\
+  -e CZ_SERVER_BASE_URL=https://git.example.com \\
+  -e CZ_AUTH_JWT_SECRET=replace-with-a-long-random-string \\
+  ghcr.io/mkappworks-dev/cloudzilla-app:v0.3.0
+
+# run migrations once — the CLI is bundled in the same image
+docker exec -it cloudzilla /app/cloudzilla-cli migrate`,
+  html: `<span class="c-prompt">$</span> docker run -d <span class="c-flag">--name</span> cloudzilla <span class="c-flag">\\</span>
+    <span class="c-flag">-p</span> 8080:8080 <span class="c-flag">-p</span> 2222:2222 <span class="c-flag">\\</span>
+    <span class="c-flag">-v</span> cloudzilla_data:/data <span class="c-flag">\\</span>
+    <span class="c-flag">-e</span> CZ_DATABASE_DSN=<span class="c-str">postgres://cz:secret@db:5432/cloudzilla?sslmode=disable</span> <span class="c-flag">\\</span>
+    <span class="c-flag">-e</span> CZ_SERVER_BASE_URL=<span class="c-str">https://git.example.com</span> <span class="c-flag">\\</span>
+    <span class="c-flag">-e</span> CZ_AUTH_JWT_SECRET=<span class="c-str">replace-with-a-long-random-string</span> <span class="c-flag">\\</span>
+    ghcr.io/mkappworks-dev/cloudzilla-app:v0.3.0
+
+<span class="c-comment"># run migrations once — the CLI is bundled in the same image</span>
+<span class="c-prompt">$</span> docker exec -it cloudzilla /app/cloudzilla-cli migrate
+<span class="c-comment"># then open http://localhost:8080 — first visit redirects to /setup</span>`,
+};
+
+const cbCompose = {
+  copy: `services:
+  cloudzilla:
+    image: ghcr.io/mkappworks-dev/cloudzilla-app:v0.3.0
+    ports: ["8080:8080", "2222:2222"]
+    volumes: ["cloudzilla_data:/data"]
+    environment:
+      CZ_DATABASE_DSN: postgres://cz:secret@db:5432/cloudzilla?sslmode=disable
+      CZ_SERVER_BASE_URL: https://git.example.com
+      CZ_AUTH_JWT_SECRET: replace-with-a-long-random-string
+      CZ_AUTH_COOKIE_SECURE: "true"
+    depends_on: [db]
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: cz
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: cloudzilla
+    volumes: ["czdata:/var/lib/postgresql/data"]
+volumes:
+  czdata:
+  cloudzilla_data:`,
+  html: `<span class="c-comment">services:</span>
+  cloudzilla:
+    image: ghcr.io/mkappworks-dev/cloudzilla-app:v0.3.0
+    ports: [<span class="c-str">"8080:8080"</span>, <span class="c-str">"2222:2222"</span>]
+    volumes: [<span class="c-str">"cloudzilla_data:/data"</span>]
+    environment:
+      CZ_DATABASE_DSN: <span class="c-str">postgres://cz:secret@db:5432/cloudzilla?sslmode=disable</span>
+      CZ_SERVER_BASE_URL: <span class="c-str">https://git.example.com</span>
+      CZ_AUTH_JWT_SECRET: <span class="c-str">replace-with-a-long-random-string</span>
+      CZ_AUTH_COOKIE_SECURE: <span class="c-str">"true"</span>
+    depends_on: [db]
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: cz
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: cloudzilla
+    volumes: [<span class="c-str">"czdata:/var/lib/postgresql/data"</span>]
+volumes:
+  czdata:
+  cloudzilla_data:`,
+};
+
+const cbBinary = {
+  copy: `git clone https://github.com/mkappworks-dev/cloudzilla-app.git
+cd cloudzilla-app
+make build   # produces dist/cloudzilla (server) and dist/cloudzilla-cli (admin)
+
+export CZ_DATABASE_DSN=postgres://localhost/cloudzilla?sslmode=disable
+export CZ_AUTH_JWT_SECRET=replace-with-a-long-random-string
+./dist/cloudzilla-cli migrate   # apply migrations once
+./dist/cloudzilla               # start the server on :8080`,
+  html: `<span class="c-prompt">$</span> git clone https://github.com/mkappworks-dev/cloudzilla-app.git
+<span class="c-prompt">$</span> cd cloudzilla-app
+<span class="c-prompt">$</span> make build   <span class="c-comment"># produces dist/cloudzilla (server) and dist/cloudzilla-cli (admin)</span>
+
+<span class="c-prompt">$</span> export CZ_DATABASE_DSN=<span class="c-str">postgres://localhost/cloudzilla?sslmode=disable</span>
+<span class="c-prompt">$</span> export CZ_AUTH_JWT_SECRET=<span class="c-str">replace-with-a-long-random-string</span>
+<span class="c-prompt">$</span> ./dist/cloudzilla-cli migrate   <span class="c-comment"># apply migrations once</span>
+<span class="c-prompt">$</span> ./dist/cloudzilla               <span class="c-comment"># start the server on :8080</span>`,
+};
+
+const cbSsh = {
+  copy: `git clone ssh://git@git.example.com:2222/acme/forge.git`,
+  html: `<span class="c-prompt">$</span> git clone ssh://git@git.example.com:2222/acme/forge.git
+<span class="c-comment"># 2222 is the default SSH git port — see CZ_GIT_SSH_PORT</span>`,
+};
+
+const cbHttps = {
+  copy: `git clone https://git.example.com/acme/forge.git`,
+  html: `<span class="c-prompt">$</span> git clone https://git.example.com/acme/forge.git
+<span class="c-comment"># username: your handle · password: a personal access token</span>`,
+};
+
+const cbCaddy = {
+  copy: `git.example.com {
+    reverse_proxy localhost:8080
+}`,
+  html: `git.example.com {
+    reverse_proxy localhost:8080
+}`,
+};
+
+const cbBackup = {
+  copy: `pg_dump cloudzilla | gzip > cloudzilla-$(date +%F).sql.gz`,
+  html: `<span class="c-prompt">$</span> pg_dump cloudzilla | gzip &gt; cloudzilla-<span class="c-str">$(date +%F)</span>.sql.gz`,
+};
+
+const description =
+  'Documentation for Cloudzilla — a minimal, self-hosted Git forge. Install, configure, and operate a single-binary forge backed by PostgreSQL.';
+---
+<LandingLayout title="Docs" description={description}>
+  <Nav />
+
+  <main id="main">
+    <div class="wrap">
+      <div class="docs">
+
+        <!-- left: section nav -->
+        <aside class="docs-nav" aria-label="Documentation sections">
+          <button class="docs-search-trigger" data-cmdk-open aria-label="Search docs">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <span class="dst-label">Search docs…</span>
+            <kbd class="dst-kbd"><span>⌘</span>K</kbd>
+          </button>
+          <div class="docs-mobile-bar">
+            <span class="mb-now"><span class="mb-k">Docs</span> <span data-mb-now>Introduction</span></span>
+            <svg class="mb-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="docs-nav-inner">
+            <div class="dn-group">
+              <p class="dn-label">Getting started</p>
+              <a class="dn-link" href="#introduction">Introduction</a>
+              <a class="dn-link" href="#install">Installation</a>
+              <a class="dn-link" href="#first-run">First run</a>
+            </div>
+            <div class="dn-group">
+              <p class="dn-label">Operating</p>
+              <a class="dn-link" href="#configuration">Configuration</a>
+              <a class="dn-link" href="#git-access">Git access</a>
+              <a class="dn-link" href="#reverse-proxy">Reverse proxy &amp; TLS</a>
+            </div>
+            <div class="dn-group">
+              <p class="dn-label">Administration</p>
+              <a class="dn-link" href="#backups">Backups</a>
+              <a class="dn-link" href="#upgrading">Upgrading</a>
+            </div>
+            <div class="dn-group">
+              <p class="dn-label">Reference</p>
+              <a class="dn-link" href={LINKS.github} target="_blank" rel="noopener">GitHub repo ↗</a>
+              <a class="dn-link" href={LINKS.changelog}>Changelog</a>
+            </div>
+          </div>
+        </aside>
+
+        <!-- center: article -->
+        <article class="docs-article">
+          <p class="docs-kicker">Getting started</p>
+          <h1 class="docs-h1">Self-host Cloudzilla</h1>
+          <p class="docs-lede">Cloudzilla is a single static binary backed by PostgreSQL. There is no <code class="ic">git</code> executable to install, no message queue, and no separate search service — this guide takes you from a fresh host to a running forge.</p>
+
+          <!-- Introduction -->
+          <section class="docs-section" id="introduction">
+            <h2>Introduction</h2>
+            <p>Everything Cloudzilla needs at runtime is the binary itself and a PostgreSQL database. Git transport (smart HTTP and SSH) is implemented in pure Go via <code class="ic">go-git</code>, full-text search runs on Postgres <code class="ic">tsvector</code>, and the UI is server-rendered HTML over the wire. That means a deployment is two moving parts you already know how to operate.</p>
+            <div class="callout tip">
+              <span class="co-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2z"/></svg></span>
+              <p><strong>In a hurry?</strong> Skip to <a class="ilink" href="#install">Installation</a> — Docker, a <code class="ic">CZ_DATABASE_DSN</code>, and one <code class="ic">migrate</code> command get you a forge on port <code class="ic">8080</code>.</p>
+            </div>
+            <h3>What you'll need</h3>
+            <ul class="dl">
+              <li>A Linux host (amd64 or arm64), or Docker on any platform.</li>
+              <li><strong>PostgreSQL 14+</strong> — managed or self-run; it's the only runtime dependency.</li>
+              <li>Two open ports: one for HTTP (default <code class="ic">8080</code>) and one for SSH Git access (default <code class="ic">2222</code>).</li>
+            </ul>
+          </section>
+
+          <!-- Installation -->
+          <section class="docs-section" id="install">
+            <h2>Installation</h2>
+            <p>Pick whichever fits your stack. Each ships the same server binary plus a small bundled admin CLI (<code class="ic">cloudzilla-cli</code>) that runs database migrations — Docker is the fastest path to a running instance.</p>
+
+            <h3>Docker</h3>
+            <p>Pull the alpha image and point it at a database. The schema isn't applied automatically — run <code class="ic">cloudzilla-cli migrate</code> once (it's bundled in the image), and the database only needs to exist and be reachable.</p>
+            <CodeBlock caption="docker" copy={cbDocker.copy} html={cbDocker.html} />
+
+            <h3>Docker Compose</h3>
+            <p>If you want Postgres alongside it, this is the whole stack. After it's up, apply migrations once with <code class="ic">docker compose exec cloudzilla /app/cloudzilla-cli migrate</code>:</p>
+            <CodeBlock caption="docker-compose.yml" copy={cbCompose.copy} html={cbCompose.html} />
+
+            <h3>From source</h3>
+            <p>No release artifact yet — build it with <code class="ic">make build</code>, which embeds templates and compiled CSS into two static binaries (the server and the admin CLI). No Node.js or runtime to install.</p>
+            <CodeBlock caption="build & run" copy={cbBinary.copy} html={cbBinary.html} />
+          </section>
+
+          <!-- First run -->
+          <section class="docs-section" id="first-run">
+            <h2>First run</h2>
+            <p>Once you've run <code class="ic">cloudzilla-cli migrate</code> against an empty database, the server waits for you to create the first account.</p>
+            <ol class="docs-steps">
+              <li><strong>Run migrations.</strong> Apply the schema once with <code class="ic">cloudzilla-cli migrate</code> (see <a class="ilink" href="#install">Installation</a>). It's safe to re-run — applied migrations are skipped.</li>
+              <li><strong>Open the instance.</strong> Visit <code class="ic">http://localhost:8080</code>. The first request redirects to <code class="ic">/setup</code>.</li>
+              <li><strong>Create the superadmin.</strong> The first account created at <code class="ic">/setup</code> becomes the instance owner — full admin rights, including user and org management.</li>
+              <li><strong>Add an SSH key.</strong> Under <em>Settings → SSH keys</em>, paste your public key so you can push over SSH. See <a class="ilink" href="#git-access">Git access</a>.</li>
+              <li><strong>Create a repository</strong> and push your first commit. That's a working forge.</li>
+            </ol>
+            <div class="callout note">
+              <span class="co-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></span>
+              <p>To invite more users when open registration is off, the superadmin manages invites and the <code class="ic">allow_registration</code> setting from <em>Admin → Settings</em>.</p>
+            </div>
+          </section>
+
+          <!-- Configuration -->
+          <section class="docs-section" id="configuration">
+            <h2>Configuration</h2>
+            <p>Cloudzilla reads a <code class="ic">config.yaml</code> file, environment variables, or both — env vars (all prefixed <code class="ic">CZ_</code>) override the file, so containerized deployments can skip the file entirely. Dots in a config key map to underscores: <code class="ic">auth.jwt_secret</code> → <code class="ic">CZ_AUTH_JWT_SECRET</code>. The essentials:</p>
+            <table class="opt-table">
+              <thead>
+                <tr><th>Variable</th><th>Description</th><th>Default</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="k"><code class="ic">CZ_DATABASE_DSN</code></td>
+                  <td class="d">PostgreSQL connection string. <span class="req">required</span></td>
+                  <td class="def">—</td>
+                </tr>
+                <tr>
+                  <td class="k"><code class="ic">CZ_SERVER_BASE_URL</code></td>
+                  <td class="d">Public URL of the instance. Used in clone URLs, webhooks, and OAuth callbacks.</td>
+                  <td class="def">http://localhost:8080</td>
+                </tr>
+                <tr>
+                  <td class="k"><code class="ic">CZ_SERVER_PORT</code></td>
+                  <td class="d">Port the web server binds to.</td>
+                  <td class="def">8080</td>
+                </tr>
+                <tr>
+                  <td class="k"><code class="ic">CZ_GIT_SSH_PORT</code></td>
+                  <td class="d">Port the built-in Git SSH server binds to.</td>
+                  <td class="def">2222</td>
+                </tr>
+                <tr>
+                  <td class="k"><code class="ic">CZ_GIT_REPOS_ROOT</code></td>
+                  <td class="d">Filesystem path for bare Git repository storage.</td>
+                  <td class="def">./git-repos</td>
+                </tr>
+                <tr>
+                  <td class="k"><code class="ic">CZ_AUTH_JWT_SECRET</code></td>
+                  <td class="d">Signing secret for JWT session cookies. <span class="req">set in prod</span></td>
+                  <td class="def">dev default</td>
+                </tr>
+                <tr>
+                  <td class="k"><code class="ic">CZ_AUTH_COOKIE_SECURE</code></td>
+                  <td class="d">Set the <code class="ic">Secure</code> flag on cookies — enable when serving over HTTPS.</td>
+                  <td class="def">false</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="callout warn">
+              <span class="co-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg></span>
+              <p>Always set <code class="ic">CZ_AUTH_JWT_SECRET</code> to a long, fixed random string in production. The built-in default is a known dev placeholder — leaving it in place lets anyone forge session tokens.</p>
+            </div>
+
+            <h3>Email &amp; OAuth (optional)</h3>
+            <p>Both are off until configured. Set <code class="ic">CZ_SMTP_HOST</code> (plus <code class="ic">CZ_SMTP_PORT</code>, <code class="ic">CZ_SMTP_USERNAME</code>, <code class="ic">CZ_SMTP_PASSWORD</code>, <code class="ic">CZ_SMTP_FROM</code>, <code class="ic">CZ_SMTP_TLS</code>) to enable email notifications. For Google sign-in, set <code class="ic">CZ_OAUTH_GOOGLE_CLIENT_ID</code>, <code class="ic">CZ_OAUTH_GOOGLE_CLIENT_SECRET</code>, and <code class="ic">CZ_OAUTH_GOOGLE_REDIRECT_URL</code> (must match the URI registered in the Google console).</p>
+          </section>
+
+          <!-- Git access -->
+          <section class="docs-section" id="git-access">
+            <h2>Git access</h2>
+            <p>Cloudzilla speaks both smart HTTP and SSH out of the box, both implemented in pure Go. There is no system <code class="ic">git</code> binary involved on the server side.</p>
+            <h3>Over SSH</h3>
+            <p>Add your public key under <em>Settings → SSH keys</em>, then clone using the instance's SSH port (default <code class="ic">2222</code>):</p>
+            <CodeBlock caption="clone over ssh" copy={cbSsh.copy} html={cbSsh.html} />
+            <div class="callout note">
+              <span class="co-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></span>
+              <p>The server's SSH host key is generated on first boot (<code class="ic">CZ_GIT_SSH_HOST_KEY</code>, persisted in the data volume). Keep it stable across restarts — replacing it makes clients report <code class="ic">REMOTE HOST IDENTIFICATION HAS CHANGED</code>.</p>
+            </div>
+            <h3>Over HTTPS</h3>
+            <p>Use a <strong>personal access token</strong> as the password — generate one under <em>Settings → Tokens</em>. Tokens can be scoped read-only or read/write per repository.</p>
+            <CodeBlock caption="clone over https" copy={cbHttps.copy} html={cbHttps.html} />
+          </section>
+
+          <!-- Reverse proxy -->
+          <section class="docs-section" id="reverse-proxy">
+            <h2>Reverse proxy &amp; TLS</h2>
+            <p>For production, terminate TLS at a reverse proxy and forward HTTP traffic to Cloudzilla. SSH stays a direct TCP passthrough on its own port. A minimal Caddy config:</p>
+            <CodeBlock caption="Caddyfile" copy={cbCaddy.copy} html={cbCaddy.html} />
+            <div class="callout note">
+              <span class="co-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></span>
+              <p>Set <code class="ic">CZ_SERVER_BASE_URL</code> to the public HTTPS URL so generated clone links, webhooks, and OAuth callbacks point at the proxy rather than the internal port. Behind TLS, also set <code class="ic">CZ_AUTH_COOKIE_SECURE=true</code> so session cookies carry the <code class="ic">Secure</code> flag.</p>
+            </div>
+          </section>
+
+          <!-- Backups -->
+          <section class="docs-section" id="backups">
+            <h2>Backups</h2>
+            <p>Because all state — repositories, issues, users, settings — lives in PostgreSQL and on the repository volume, a backup is two things: a database dump and the data directory.</p>
+            <ul class="dl">
+              <li><strong>Database:</strong> a regular <code class="ic">pg_dump</code> of the Cloudzilla database captures all metadata and search indexes.</li>
+              <li><strong>Repositories:</strong> snapshot the configured <code class="ic">CZ_GIT_REPOS_ROOT</code> (under Docker, the <code class="ic">/data</code> volume that also holds the SSH host key).</li>
+            </ul>
+            <CodeBlock caption="nightly dump" copy={cbBackup.copy} html={cbBackup.html} />
+          </section>
+
+          <!-- Upgrading -->
+          <section class="docs-section" id="upgrading">
+            <h2>Upgrading</h2>
+            <p>Upgrades are a binary (or image tag) swap, followed by a migration run. The server doesn't migrate on its own, so run the bundled CLI after pulling the new version.</p>
+            <ol class="docs-steps">
+              <li><strong>Back up</strong> the database first — see <a class="ilink" href="#backups">Backups</a>.</li>
+              <li><strong>Pull the new tag</strong> (e.g. bump <code class="ic">v0.3.0</code> → the next release).</li>
+              <li><strong>Run migrations</strong> with the new <code class="ic">cloudzilla-cli migrate</code>, then restart the container or service.</li>
+              <li><strong>Watch the logs</strong> — the instance reports it's serving once it's up.</li>
+            </ol>
+            <div class="callout tip">
+              <span class="co-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2z"/></svg></span>
+              <p>Cloudzilla is in alpha — read the <a class="ilink" href={LINKS.changelog}>changelog</a> before upgrading. Breaking changes are called out there per release.</p>
+            </div>
+
+            <!-- pager -->
+            <nav class="docs-pager" aria-label="More">
+              <a class="prev" href="/#quickstart">
+                <div class="pg-dir">← Overview</div>
+                <div class="pg-title">Quickstart on the landing page</div>
+              </a>
+              <a class="next" href={LINKS.changelog}>
+                <div class="pg-dir">Next →</div>
+                <div class="pg-title">Changelog</div>
+              </a>
+            </nav>
+          </section>
+        </article>
+
+      </div><!-- /docs -->
+    </div><!-- /wrap -->
+  </main>
+
+  <!-- command palette (⌘K) -->
+  <div class="cmdk" id="cmdk" hidden>
+    <div class="cmdk-scrim" data-cmdk-close></div>
+    <div class="cmdk-panel" role="dialog" aria-modal="true" aria-label="Search documentation">
+      <div class="cmdk-input-wrap">
+        <svg class="cmdk-search-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input class="cmdk-input" type="text" placeholder="Search the docs…" autocomplete="off" spellcheck="false" aria-label="Search query" />
+        <kbd class="cmdk-esc">esc</kbd>
+      </div>
+      <div class="cmdk-results" role="listbox" aria-label="Results"></div>
+      <div class="cmdk-foot">
+        <span class="ck-hint"><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+        <span class="ck-hint"><kbd>↵</kbd> open</span>
+        <span class="ck-hint"><kbd>esc</kbd> close</span>
+        <span class="ck-brand">cloudzilla docs</span>
+      </div>
+    </div>
+  </div>
+
+  <Footer />
+</LandingLayout>
+
+<script>
+  import '../scripts/docs.ts';
+</script>

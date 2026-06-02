@@ -1,0 +1,53 @@
+---
+import { SHOTS } from '../../consts';
+const first = SHOTS[0];
+---
+<section class="section-pad divide" id="screens">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">The product</span>
+      <h2>A forge you already know how to use.</h2>
+      <p>The whole GitHub-style workflow, server-rendered and fast. Real screens from a running Cloudzilla instance.</p>
+    </div>
+
+    <div class="shots reveal">
+      <div class="shot-stage">
+        <div class="browser-chrome" aria-hidden="true">
+          <span class="bc-dots"><i></i><i></i><i></i></span>
+          <span class="bc-url mono">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+            <span id="browser-url">{first.url}</span>
+          </span>
+          <span class="bc-actions"><i></i><i></i></span>
+        </div>
+        <div class="shot-frame">
+          {SHOTS.map((s, i) => (
+            <img
+              class={i === 0 ? 'is-active' : undefined}
+              src={s.src}
+              alt={s.alt}
+              width="1440"
+              height="900"
+              loading={i === 0 ? 'eager' : 'lazy'}
+              data-title={s.title}
+              data-desc={s.desc}
+              data-url={s.url}
+            />
+          ))}
+        </div>
+      </div>
+      <div class="shot-bar">
+        <div class="shot-cap"><b>{first.title}</b> — {first.desc}</div>
+        <div class="shot-nav">
+          <button class="shot-arrow shot-prev" aria-label="Previous screenshot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <button class="shot-arrow shot-next" aria-label="Next screenshot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+        </div>
+      </div>
+      <div class="shot-tabs" role="tablist" aria-label="Screenshots">
+        {SHOTS.map((s, i) => (
+          <button class="shot-tab" role="tab" aria-selected={i === 0 ? 'true' : 'false'}>{s.label}</button>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

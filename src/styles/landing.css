@@ -123,10 +123,9 @@
 .cz .nav-inner { position: relative; display: flex; align-items: center; gap: 22px; height: 60px; }
 .cz .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; letter-spacing: -.01em; }
 .cz .brand .logo {
-  width: 26px; height: 26px; border-radius: 6px;
-  display: grid; place-items: center; background: hsl(var(--cz-fg)); color: #000;
+  display: grid; place-items: center; color: hsl(var(--cz-fg));
 }
-.cz .brand .logo svg { width: 16px; height: 16px; }
+.cz .brand .logo svg { width: 24px; height: 24px; }
 .cz .brand .name { font-size: 15.5px; }
 .cz .nav-links { position: absolute; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 4px; }
 .cz .nav-links a {
@@ -459,10 +458,11 @@
    FOOTER
    ============================================================ */
 .cz .footer { border-top: 1px solid hsl(var(--cz-border) / .08); padding: 48px 0 40px; }
-.cz .footer-top { display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 40px; margin-bottom: 48px; }
+.cz .footer-top { display: grid; grid-template-columns: auto 1fr 1fr 1fr; gap: 40px 56px; margin-bottom: 48px; }
+.cz .footer-brand { padding-right: clamp(24px, 5vw, 80px); }
 .cz .footer-brand .brand { margin-bottom: 14px; }
-.cz .footer-brand .logo { width: 26px; height: 26px; border-radius: 6px; display: grid; place-items: center; background: hsl(var(--cz-fg)); color: #000; }
-.cz .footer-brand .logo svg { width: 16px; height: 16px; }
+.cz .footer-brand .logo { display: grid; place-items: center; color: hsl(var(--cz-fg)); }
+.cz .footer-brand .logo svg { width: 24px; height: 24px; }
 .cz .footer-brand p { font-size: 13.5px; color: hsl(var(--cz-muted-foreground)); max-width: 30ch; margin: 0; }
 .cz .footer-col h5 { font-family: var(--cz-font-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: hsl(var(--cz-faint)); margin: 0 0 16px; font-weight: 500; }
 .cz .footer-col a { display: block; font-size: 13.5px; color: hsl(var(--cz-muted-foreground)); padding: 5px 0; transition: color .15s; }

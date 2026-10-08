@@ -2,7 +2,7 @@ export const SITE = {
   name: 'Cloudzilla',
   tagline: 'A minimal, self-hosted Git forge',
   description: 'Single binary. No external runtime dependencies. Git hosting, pull requests, code review, issues, and more.',
-  version: 'v0.3.0',
+  version: 'v0.6.0',
   ogImage: '/og.png',
 };
 
@@ -13,7 +13,7 @@ export const LINKS = {
   changelog: '/changelog',
 };
 
-export const DOCKER_PULL = 'docker pull ghcr.io/mkappworks-dev/cloudzilla-app:v0.3.0';
+export const DOCKER_PULL = 'docker pull ghcr.io/mkappworks-dev/cloudzilla-app:v0.6.0';
 
 export const STACK = ['Go', 'Templ', 'HTMX', 'Alpine.js', 'Tailwind CSS', 'PostgreSQL'];
 
@@ -45,10 +45,101 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: 'v0.6.0',
+    date: 'OCT 8, 2026',
+    codename: 'Operate it for real — mirrors, admin tools, metrics, and rate limits.',
+    tag: { label: 'Latest', tone: 'green' },
+    groups: [
+      {
+        kind: 'added',
+        items: [
+          '<b>Pull mirrors</b> — scheduled sync from another Git host, a read-only guard, and credentials sealed with <span class="mono">security.secret_key</span>.',
+          '<b>Edit, rename, and delete files</b> straight from the code browser, plus a file tree that stays on blob pages.',
+          '<b>Syntax highlighting</b> with per-user code themes, and a create-a-fork page with owner, name, and default-branch options.',
+          '<b>Password reset</b> by email with a CLI fallback, a <span class="mono">reset-2fa</span> command for locked-out operators, and reset links issued from the admin user page.',
+          '<b>Admin user management</b> — suspend accounts everywhere they sign in.',
+          '<b>Avatar uploads</b> on local disk or any S3-compatible storage.',
+          '<b>Close issues from closing keywords</b> in commits and pull requests.',
+          '<b>Prometheus metrics</b> on a separate listener, plus <span class="mono">/healthz</span> and <span class="mono">/readyz</span> probes and a Docker <span class="mono">HEALTHCHECK</span>.',
+          '<b>API rate limits</b> per user and per IP, configurable per resource.',
+          'A <b>Checks</b> tab of commit statuses replaces the Actions mockup.',
+        ],
+      },
+      {
+        kind: 'fixed',
+        items: [
+          'Private repositories now answer pages, code search, and Git requests exactly like a missing repo.',
+          'Webhooks refuse private addresses at dial time; SSH refuses a key already registered as a deploy key (and vice versa).',
+          'Required status checks are evaluated against, and merge, the head commit that passed.',
+          'Code browser: annotated tags, nested file-tree filter, escaped refs and paths, and branch switching for refs like <span class="mono">feature/x</span>.',
+          'Settings forms show save errors instead of a stale success toast; the footer shows the real build version.',
+        ],
+      },
+    ],
+  },
+  {
+    version: 'v0.5.0',
+    date: 'OCT 4, 2026',
+    codename: 'Import, seed, and faster pull requests — on PostgreSQL 18.',
+    tag: { label: 'alpha', tone: 'gray' },
+    groups: [
+      {
+        kind: 'added',
+        items: [
+          '<b>Import a repository</b> from another Git host.',
+          '<span class="mono">cloudzilla-cli seed</span> fills a dev instance with test data.',
+          'Show/hide password toggle on sign-in and sign-up; admin pages linked from the user menu; command-palette items replace the home shortcuts panel.',
+        ],
+      },
+      {
+        kind: 'improved',
+        items: [
+          '<b>Breaking:</b> Docker Compose now runs <b>PostgreSQL 18</b>. Dump the database, remove the <span class="mono">postgres_data</span> volume, and restore — see the upgrade notes in the docs.',
+          'Pull requests diff from their merge base, skip the unused diff on the Conversation tab, and stop writing merged trees on page views.',
+          'Pushes walk only the commits they add; embedded assets are cached and gzipped, and mermaid loads on demand.',
+        ],
+      },
+      {
+        kind: 'fixed',
+        items: [
+          'Web commits keep existing entries intact and cap path and upload sizes; <span class="mono">.git</span> paths are refused.',
+          'Merged trees keep submodules and mode changes; tree entries sort in Git order.',
+          'Toasts show after <span class="mono">HX-Redirect</span> and <span class="mono">HX-Refresh</span> responses; left-side PR line comments land on the right line.',
+        ],
+      },
+    ],
+  },
+  {
+    version: 'v0.4.0',
+    date: 'OCT 1, 2026',
+    codename: 'Security hardening — accounts, auth, and Git pushes.',
+    tag: { label: 'alpha', tone: 'gray' },
+    groups: [
+      {
+        kind: 'added',
+        items: [
+          '<b>Email verification</b> at sign-up, with Google sign-in linked to verified addresses and connect / disconnect from account settings.',
+          '<b>Organizations own their repositories</b>; repository transfers must be accepted by the recipient.',
+          'Deleted accounts hand their content to a ghost user; commit author email is private by default.',
+          'New UI for gists, the dashboard, profiles, and organizations (overhaul phases 7–9).',
+        ],
+      },
+      {
+        kind: 'fixed',
+        items: [
+          'PAT and OAuth-app token scopes are enforced; TOTP is required on API, LDAP, SAML, and Google sign-in.',
+          'Branch protection is enforced before receive-pack writes the ref; unreachable, missing, or stale pushes are refused.',
+          'Thin packs and delete-only pushes are accepted over HTTP and SSH.',
+          'Private issues and repositories no longer leak through search, notifications, pinned lists, or the API.',
+        ],
+      },
+    ],
+  },
+  {
     version: 'v0.3.0',
     date: 'MAY 20, 2026',
     codename: 'UI overhaul — flagship pages, insights, and a new design system.',
-    tag: { label: 'Latest', tone: 'green' },
+    tag: { label: 'alpha', tone: 'gray' },
     groups: [
       {
         kind: 'added',

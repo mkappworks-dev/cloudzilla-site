@@ -1,6 +1,6 @@
 ---
-const dockerCopy = `docker pull ghcr.io/mkappworks-dev/cloudzilla-app:v0.3.0
-docker run -d --name cloudzilla -p 8080:8080 -p 2222:2222 -e CZ_DATABASE_DSN=postgres://localhost/cloudzilla?sslmode=disable ghcr.io/mkappworks-dev/cloudzilla-app:v0.3.0
+const dockerCopy = `docker pull ghcr.io/mkappworks-dev/cloudzilla-app:v0.6.0
+docker run -d --name cloudzilla -p 8080:8080 -p 2222:2222 -e CZ_DATABASE_DSN=postgres://localhost/cloudzilla?sslmode=disable ghcr.io/mkappworks-dev/cloudzilla-app:v0.6.0
 docker exec -it cloudzilla /app/cloudzilla-cli migrate`;
 const localCopy = `git clone https://github.com/mkappworks-dev/cloudzilla-app
 cd cloudzilla-app
@@ -40,12 +40,12 @@ make dev`;
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
               <span data-copy-label>Copy</span>
             </button>
-<pre><span class="c-prompt">$</span> docker pull ghcr.io/mkappworks-dev/cloudzilla-app:v0.3.0
+<pre><span class="c-prompt">$</span> docker pull ghcr.io/mkappworks-dev/cloudzilla-app:v0.6.0
 
 <span class="c-prompt">$</span> docker run -d <span class="c-flag">--name</span> cloudzilla <span class="c-flag">\</span>
     <span class="c-flag">-p</span> 8080:8080 <span class="c-flag">-p</span> 2222:2222 <span class="c-flag">\</span>
     <span class="c-flag">-e</span> CZ_DATABASE_DSN=<span class="c-str">postgres://localhost/cloudzilla?sslmode=disable</span> <span class="c-flag">\</span>
-    ghcr.io/mkappworks-dev/cloudzilla-app:v0.3.0
+    ghcr.io/mkappworks-dev/cloudzilla-app:v0.6.0
 
 <span class="c-prompt">$</span> docker exec -it cloudzilla /app/cloudzilla-cli migrate
 <span class="c-comment"># open http://localhost:8080 → redirects to /setup</span></pre>

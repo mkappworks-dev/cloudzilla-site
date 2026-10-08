@@ -1,5 +1,181 @@
 # Changelog
 
+## [0.6.0](https://github.com/mkappworks-dev/cloudzilla-app/compare/v0.5.0...v0.6.0) (2026-10-08)
+
+
+### Features
+
+* **auth:** password reset by email, with a CLI fallback ([#175](https://github.com/mkappworks-dev/cloudzilla-app/issues/175))
+* **admin:** manage user accounts and suspend them everywhere ([#176](https://github.com/mkappworks-dev/cloudzilla-app/issues/176))
+* **admin:** issue password reset links from the admin user page ([#183](https://github.com/mkappworks-dev/cloudzilla-app/issues/183))
+* **cli:** reset-2fa command for a locked-out operator ([#182](https://github.com/mkappworks-dev/cloudzilla-app/issues/182))
+* **code:** edit, rename and delete files from the browser ([#173](https://github.com/mkappworks-dev/cloudzilla-app/issues/173))
+* **fork:** a create-a-fork page with owner, name and default-branch options ([#149](https://github.com/mkappworks-dev/cloudzilla-app/issues/149))
+* **issues:** close issues from closing keywords ([#174](https://github.com/mkappworks-dev/cloudzilla-app/issues/174))
+* **mirror:** pull mirrors with scheduled sync, a read-only guard and sealed credentials ([#181](https://github.com/mkappworks-dev/cloudzilla-app/issues/181))
+* **ops:** add /healthz and /readyz probes and a Docker HEALTHCHECK ([#170](https://github.com/mkappworks-dev/cloudzilla-app/issues/170))
+* **ops:** Prometheus metrics on a separate listener ([#184](https://github.com/mkappworks-dev/cloudzilla-app/issues/184))
+* **api:** rate-limit requests per user and per IP ([#169](https://github.com/mkappworks-dev/cloudzilla-app/issues/169))
+* **storage:** avatar uploads on local or S3-compatible storage ([#179](https://github.com/mkappworks-dev/cloudzilla-app/issues/179))
+* **ui:** syntax highlighting with per-user code themes ([#150](https://github.com/mkappworks-dev/cloudzilla-app/issues/150))
+* **ui:** keep the file tree on blob pages ([#146](https://github.com/mkappworks-dev/cloudzilla-app/issues/146))
+
+
+### Bug Fixes
+
+* **security:** answer a private repo's pages, code search and git requests like a missing repo's ([#151](https://github.com/mkappworks-dev/cloudzilla-app/issues/151), [#155](https://github.com/mkappworks-dev/cloudzilla-app/issues/155), [#157](https://github.com/mkappworks-dev/cloudzilla-app/issues/157))
+* **webhooks:** refuse private addresses at dial time ([#172](https://github.com/mkappworks-dev/cloudzilla-app/issues/172))
+* **ssh:** refuse a key already registered as a deploy key, and the reverse ([#177](https://github.com/mkappworks-dev/cloudzilla-app/issues/177), [#178](https://github.com/mkappworks-dev/cloudzilla-app/issues/178))
+* **pulls:** merge the head commit that passed the required checks ([#165](https://github.com/mkappworks-dev/cloudzilla-app/issues/165))
+* **code:** resolve annotated tags, escape refs and paths, filter nested matches in the file tree ([#153](https://github.com/mkappworks-dev/cloudzilla-app/issues/153), [#167](https://github.com/mkappworks-dev/cloudzilla-app/issues/167), [#161](https://github.com/mkappworks-dev/cloudzilla-app/issues/161))
+* **ui:** replace the Actions mockup with a Checks tab of commit statuses ([#171](https://github.com/mkappworks-dev/cloudzilla-app/issues/171))
+
+
+## [0.5.0](https://github.com/mkappworks-dev/cloudzilla-app/compare/v0.4.0...v0.5.0) (2026-10-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* **deps:** docker-compose deployments on Postgres 17 must dump the database, remove the postgres_data volume and restore into Postgres 18; see docs/deployment.md.
+
+### Features
+
+* **cli:** add seed command for test data ([#126](https://github.com/mkappworks-dev/cloudzilla-app/issues/126)) ([8b29157](https://github.com/mkappworks-dev/cloudzilla-app/commit/8b29157fed6ad3a478ff24cad6098bcb0ca5c828))
+* **import:** import a repository from another Git host ([#136](https://github.com/mkappworks-dev/cloudzilla-app/issues/136)) ([7a0c697](https://github.com/mkappworks-dev/cloudzilla-app/commit/7a0c697622bb1916140b2d92bdb4006b0ec85559))
+* **ui:** add a show/hide password toggle to sign-in and sign-up forms ([#128](https://github.com/mkappworks-dev/cloudzilla-app/issues/128)) ([6ddeb11](https://github.com/mkappworks-dev/cloudzilla-app/commit/6ddeb11c517c8fb34d273da85eb210b38686f06d))
+* **ui:** link the admin pages from the user menu and each other ([#123](https://github.com/mkappworks-dev/cloudzilla-app/issues/123)) ([d8e3a14](https://github.com/mkappworks-dev/cloudzilla-app/commit/d8e3a14afee128d83836d1002c9b833935fcde84))
+* **ui:** replace the home shortcuts panel with command palette items ([#125](https://github.com/mkappworks-dev/cloudzilla-app/issues/125)) ([b7dd761](https://github.com/mkappworks-dev/cloudzilla-app/commit/b7dd76197099226a6f183c1adc4eaa8b221fe1ab))
+
+
+### Bug Fixes
+
+* **api:** refuse to apply left-side suggestions ([#118](https://github.com/mkappworks-dev/cloudzilla-app/issues/118)) ([afdb162](https://github.com/mkappworks-dev/cloudzilla-app/commit/afdb162696d9aa98f4cd0f33c50f1f2dcf812bfe))
+* **audit:** drop ORDER BY from the audit log count query ([#115](https://github.com/mkappworks-dev/cloudzilla-app/issues/115)) ([ff231e9](https://github.com/mkappworks-dev/cloudzilla-app/commit/ff231e97b2cb029911235d242f2d7b705aa03311))
+* **files:** cap web-commit paths and uploads, refuse .git paths ([#140](https://github.com/mkappworks-dev/cloudzilla-app/issues/140)) ([2e12ec5](https://github.com/mkappworks-dev/cloudzilla-app/commit/2e12ec5c7fa27c4c796ac57612bc834cf038ca1b))
+* **files:** keep an upload's name when the New file path ends in / ([#141](https://github.com/mkappworks-dev/cloudzilla-app/issues/141)) ([995ca26](https://github.com/mkappworks-dev/cloudzilla-app/commit/995ca26893bf7b68fbf2b77eb3d88c36f1d775f5))
+* **files:** keep existing entries intact when committing from the web ([#139](https://github.com/mkappworks-dev/cloudzilla-app/issues/139)) ([ab5cb1d](https://github.com/mkappworks-dev/cloudzilla-app/commit/ab5cb1da703c10e68d6e51493651b4e9e9875e15))
+* **git:** sort tree entries in git's order ([#133](https://github.com/mkappworks-dev/cloudzilla-app/issues/133)) ([fb5ca2b](https://github.com/mkappworks-dev/cloudzilla-app/commit/fb5ca2bfc26a51f9dcba5d3680fe6c3232b0c14d))
+* **pulls:** diff PRs from their merge base ([#122](https://github.com/mkappworks-dev/cloudzilla-app/issues/122)) ([bedda55](https://github.com/mkappworks-dev/cloudzilla-app/commit/bedda558cacc3dca96d4509e1940c795c6e247b4))
+* **pulls:** keep submodules and mode changes in merged trees ([#130](https://github.com/mkappworks-dev/cloudzilla-app/issues/130)) ([6b56eb0](https://github.com/mkappworks-dev/cloudzilla-app/commit/6b56eb0d7adfd6a6874b3d795b4694ae02a820f2))
+* **push:** walk only the commits a push adds ([#129](https://github.com/mkappworks-dev/cloudzilla-app/issues/129)) ([bc2cd0d](https://github.com/mkappworks-dev/cloudzilla-app/commit/bc2cd0d493c0414c5098ea134e14d6e8dd5a6d9e))
+* **repo:** seed the initial commit without a git binary ([#137](https://github.com/mkappworks-dev/cloudzilla-app/issues/137)) ([4062623](https://github.com/mkappworks-dev/cloudzilla-app/commit/406262311f7f19224a86b8692c8bdfb9dd97ff2e))
+* **security:** cap form bodies before the CSRF check parses them ([#142](https://github.com/mkappworks-dev/cloudzilla-app/issues/142)) ([bcd144d](https://github.com/mkappworks-dev/cloudzilla-app/commit/bcd144da3f0a989631eb80c79ca1dea60b271135))
+* **setup:** hide search and footer links on the setup page ([#108](https://github.com/mkappworks-dev/cloudzilla-app/issues/108)) ([8fb35bc](https://github.com/mkappworks-dev/cloudzilla-app/commit/8fb35bc23df5e42b5f85f88759c97d65f4d960d3))
+* **ui:** give PR line comment rows selector-safe ids ([#110](https://github.com/mkappworks-dev/cloudzilla-app/issues/110)) ([a682dac](https://github.com/mkappworks-dev/cloudzilla-app/commit/a682dac0ed8a0849bb030032368a45b4c74c6ffc))
+* **ui:** number PR context lines by the head file ([#116](https://github.com/mkappworks-dev/cloudzilla-app/issues/116)) ([4bf4f01](https://github.com/mkappworks-dev/cloudzilla-app/commit/4bf4f0119bd7439ec4fe3d462af58fed6c58098d))
+* **ui:** show data-toast when the response swaps out its element ([#109](https://github.com/mkappworks-dev/cloudzilla-app/issues/109)) ([a320df7](https://github.com/mkappworks-dev/cloudzilla-app/commit/a320df75e1205611ec450275f90db3a517a166b8))
+* **ui:** show left-side PR line comments under their base-file line ([#120](https://github.com/mkappworks-dev/cloudzilla-app/issues/120)) ([8099202](https://github.com/mkappworks-dev/cloudzilla-app/commit/80992021c09b1c9fb1e4400f6e156cedeb3bdfcd))
+* **ui:** show toasts after HX-Redirect and HX-Refresh responses ([#111](https://github.com/mkappworks-dev/cloudzilla-app/issues/111)) ([c36e1d8](https://github.com/mkappworks-dev/cloudzilla-app/commit/c36e1d8918d0033938ae9f7a81db7d28586d6d5e))
+* **ui:** skip data-toast when a dialog form answers with an error ([#114](https://github.com/mkappworks-dev/cloudzilla-app/issues/114)) ([5286524](https://github.com/mkappworks-dev/cloudzilla-app/commit/52865248c5f68bbebbc09962c28007b12d7a3628))
+* **ui:** stop page titles repeating the Cloudzilla suffix ([#124](https://github.com/mkappworks-dev/cloudzilla-app/issues/124)) ([f1065cc](https://github.com/mkappworks-dev/cloudzilla-app/commit/f1065cca3a88000bb238a347804f35f0d1fd2eb5))
+
+
+### Performance
+
+* **git:** read only the history since branches diverged ([#135](https://github.com/mkappworks-dev/cloudzilla-app/issues/135)) ([4141f69](https://github.com/mkappworks-dev/cloudzilla-app/commit/4141f6977e5ee4bd213c03ce9973ae1146b0c922))
+* **pulls:** reuse each PR tab's own loads for the tab badges ([#121](https://github.com/mkappworks-dev/cloudzilla-app/issues/121)) ([9ecd1b1](https://github.com/mkappworks-dev/cloudzilla-app/commit/9ecd1b19a3c2be08c4ad8e7a0a2a9cb265e785e2))
+* **pulls:** stop computing an unused diff on the Conversation tab ([#117](https://github.com/mkappworks-dev/cloudzilla-app/issues/117)) ([5b92d49](https://github.com/mkappworks-dev/cloudzilla-app/commit/5b92d49865311863272557efb27ac7b3440d8b46))
+* **pulls:** stop PR page views from writing merged trees ([#127](https://github.com/mkappworks-dev/cloudzilla-app/issues/127)) ([d1a98c6](https://github.com/mkappworks-dev/cloudzilla-app/commit/d1a98c6de50d401fd56c913f3d6e7f85a6f73717))
+* **push:** check for force pushes only under a rule that blocks them ([#138](https://github.com/mkappworks-dev/cloudzilla-app/issues/138)) ([01301fc](https://github.com/mkappworks-dev/cloudzilla-app/commit/01301fc63614b9f7b19c11b633b474686fb6ccfa))
+* **static:** cache and gzip embedded assets, load mermaid on demand ([#107](https://github.com/mkappworks-dev/cloudzilla-app/issues/107)) ([b895fbf](https://github.com/mkappworks-dev/cloudzilla-app/commit/b895fbf6d04b4dd1cac03fdea245d8b2de518dd8))
+
+
+### Documentation
+
+* **seed:** seed the dev instance into ./git-repos ([#131](https://github.com/mkappworks-dev/cloudzilla-app/issues/131)) ([2ccc803](https://github.com/mkappworks-dev/cloudzilla-app/commit/2ccc803fbe0f02eec2b60ed99f53ddfc0cd00443))
+* set up agent skills with a local-markdown issue tracker ([#113](https://github.com/mkappworks-dev/cloudzilla-app/issues/113)) ([d2ce63b](https://github.com/mkappworks-dev/cloudzilla-app/commit/d2ce63b618bbb70b16d413fa3c6335fc5bf47afd))
+
+
+### Build
+
+* **deps:** move to goldmark v2 ([#105](https://github.com/mkappworks-dev/cloudzilla-app/issues/105)) ([f0da8c7](https://github.com/mkappworks-dev/cloudzilla-app/commit/f0da8c76c9448afb721943eaca403a52b96ed8ea))
+* **deps:** upgrade htmx to 2.0.11 ([#106](https://github.com/mkappworks-dev/cloudzilla-app/issues/106)) ([aa85f7c](https://github.com/mkappworks-dev/cloudzilla-app/commit/aa85f7ce71989caf33d3ed4ca4ec4af41cff4724))
+* **deps:** upgrade htmx to 4.0.0 ([#119](https://github.com/mkappworks-dev/cloudzilla-app/issues/119)) ([43d477e](https://github.com/mkappworks-dev/cloudzilla-app/commit/43d477e348d8c68e889b75a305e1db4bf8b52045))
+* **deps:** upgrade mermaid to 12 ([#104](https://github.com/mkappworks-dev/cloudzilla-app/issues/104)) ([a57d727](https://github.com/mkappworks-dev/cloudzilla-app/commit/a57d72750204ef93d79873eb2c0d3812ab5045cd))
+* **deps:** upgrade Tailwind CSS to v4 ([#112](https://github.com/mkappworks-dev/cloudzilla-app/issues/112)) ([7bb274a](https://github.com/mkappworks-dev/cloudzilla-app/commit/7bb274aac7cf592753ef9de32c5e1214d435a01d))
+* **deps:** upgrade to Postgres 18, Go 1.27 and current dependencies ([#54](https://github.com/mkappworks-dev/cloudzilla-app/issues/54)) ([ed3ed0c](https://github.com/mkappworks-dev/cloudzilla-app/commit/ed3ed0cf44338742acd66f39931ddf1298a3b043))
+
+
+### Tests
+
+* keep push auto-maintenance out of every bare-repo fixture ([#134](https://github.com/mkappworks-dev/cloudzilla-app/issues/134)) ([313dca6](https://github.com/mkappworks-dev/cloudzilla-app/commit/313dca614fd57552ff38244043ea0743c493d1d6))
+* **service:** keep push auto-maintenance out of the PullDiffStats write check ([#132](https://github.com/mkappworks-dev/cloudzilla-app/issues/132)) ([c1cbd23](https://github.com/mkappworks-dev/cloudzilla-app/commit/c1cbd23ed5f3df33e30431c004c4b585ffecaa83))
+
+## [0.4.0](https://github.com/mkappworks-dev/cloudzilla-app/compare/v0.3.0...v0.4.0) (2026-10-01)
+
+
+### Features
+
+* **account:** hand a deleted account's content to a ghost user ([#79](https://github.com/mkappworks-dev/cloudzilla-app/issues/79)) ([cb3e0ae](https://github.com/mkappworks-dev/cloudzilla-app/commit/cb3e0aed4373ce03117c7d54a0e790d99b03563d))
+* **auth:** connect and disconnect Google from account settings ([#72](https://github.com/mkappworks-dev/cloudzilla-app/issues/72)) ([1383bdd](https://github.com/mkappworks-dev/cloudzilla-app/commit/1383bddf18d67084d7de14723455bbd92b1abfaa))
+* **auth:** verify email addresses and link Google sign-in to verified ones ([#73](https://github.com/mkappworks-dev/cloudzilla-app/issues/73)) ([202800d](https://github.com/mkappworks-dev/cloudzilla-app/commit/202800dfc7c22e49acd79a6ba9d8f0773c422c08))
+* **org:** make organizations own their repositories ([#80](https://github.com/mkappworks-dev/cloudzilla-app/issues/80)) ([cd87f2e](https://github.com/mkappworks-dev/cloudzilla-app/commit/cd87f2e7b0bca255679be5de19cfc69fb550d096))
+* **repos:** require the recipient to accept a repository transfer ([#97](https://github.com/mkappworks-dev/cloudzilla-app/issues/97)) ([2003218](https://github.com/mkappworks-dev/cloudzilla-app/commit/2003218618ea190aeba023bbd1ac00d4c7fd8264))
+* **settings:** keep commit author email private by default ([#56](https://github.com/mkappworks-dev/cloudzilla-app/issues/56)) ([2c97530](https://github.com/mkappworks-dev/cloudzilla-app/commit/2c97530da056e17e57d01979a74e90bc23cb2075))
+* **ui:** UI overhaul phase 7 — gists ([#43](https://github.com/mkappworks-dev/cloudzilla-app/issues/43)) ([90504f3](https://github.com/mkappworks-dev/cloudzilla-app/commit/90504f3f6ef5acbdf8ad216fdec6b2de85d37465))
+* **ui:** UI overhaul phase 8 — dashboard ([#44](https://github.com/mkappworks-dev/cloudzilla-app/issues/44)) ([bdcee6b](https://github.com/mkappworks-dev/cloudzilla-app/commit/bdcee6b8067d45fb34f2ddfe26ef9bcbff1fcd6c))
+* **ui:** UI overhaul phase 9 — profile and organizations ([#45](https://github.com/mkappworks-dev/cloudzilla-app/issues/45)) ([0b8cc69](https://github.com/mkappworks-dev/cloudzilla-app/commit/0b8cc69e3808ea8f89672197cd873963987b840d))
+
+
+### Bug Fixes
+
+* accept thin packs in git receive-pack (HTTP + SSH) ([#47](https://github.com/mkappworks-dev/cloudzilla-app/issues/47)) ([52a6f21](https://github.com/mkappworks-dev/cloudzilla-app/commit/52a6f2137a858b82ef1861491da37ac0ff0dc570))
+* **api:** bind line-comment IDs to the pull request in the URL ([#63](https://github.com/mkappworks-dev/cloudzilla-app/issues/63)) ([33a1ae1](https://github.com/mkappworks-dev/cloudzilla-app/commit/33a1ae1935ae0b0f0dec3a082fa2efcd40725a6c))
+* **api:** give non-readers the missing-repo 404 on repo API routes ([#59](https://github.com/mkappworks-dev/cloudzilla-app/issues/59)) ([d5ead16](https://github.com/mkappworks-dev/cloudzilla-app/commit/d5ead1633c68ce49b565ca4ed8eb8132500f9a1c))
+* **api:** stop serving users' emails and email settings to other people ([#53](https://github.com/mkappworks-dev/cloudzilla-app/issues/53)) ([34b4384](https://github.com/mkappworks-dev/cloudzilla-app/commit/34b43849e44ed0a82145e89f543aa1dd5289d6ed))
+* **auth:** close email disclosures and add email-verified signup ([#60](https://github.com/mkappworks-dev/cloudzilla-app/issues/60)) ([56c7ec8](https://github.com/mkappworks-dev/cloudzilla-app/commit/56c7ec8ef049d292656cce87477eccb3b51af6a2))
+* **auth:** drop the 'owner' role from repository permissions ([#102](https://github.com/mkappworks-dev/cloudzilla-app/issues/102)) ([f2bdac8](https://github.com/mkappworks-dev/cloudzilla-app/commit/f2bdac8d2891278ee17a6ad3ab4e37b5b5c65a12))
+* **auth:** enforce OAuth-app token scopes ([#58](https://github.com/mkappworks-dev/cloudzilla-app/issues/58)) ([9fcb6e3](https://github.com/mkappworks-dev/cloudzilla-app/commit/9fcb6e3d903ee782113dca93bda4fa6c201ee553))
+* **auth:** enforce personal access token scopes ([#87](https://github.com/mkappworks-dev/cloudzilla-app/issues/87)) ([7d19146](https://github.com/mkappworks-dev/cloudzilla-app/commit/7d19146522d4341a701cfbc7c61c4a58589b8e3e))
+* **auth:** harden the OAuth authorization-code flow ([#61](https://github.com/mkappworks-dev/cloudzilla-app/issues/61)) ([0310ae0](https://github.com/mkappworks-dev/cloudzilla-app/commit/0310ae0a25b7ba5bac40330c861f54c24a3a38d3))
+* **auth:** hide owner-only admin controls from admin collaborators ([#95](https://github.com/mkappworks-dev/cloudzilla-app/issues/95)) ([9bbaa6a](https://github.com/mkappworks-dev/cloudzilla-app/commit/9bbaa6ad050166129fc940568f6e58f185718a64))
+* **auth:** let the account menu's Sign out submit and redirect home ([#51](https://github.com/mkappworks-dev/cloudzilla-app/issues/51)) ([45f1f7f](https://github.com/mkappworks-dev/cloudzilla-app/commit/45f1f7f5dfa27c2983522bfbb8cc6cea93a38066))
+* **auth:** list only repos the viewer can read ([#90](https://github.com/mkappworks-dev/cloudzilla-app/issues/90)) ([23ffd98](https://github.com/mkappworks-dev/cloudzilla-app/commit/23ffd982eca06b68000ac789e432a6a58e7ed8b4))
+* **auth:** make TOTP backup codes verifiable ([#74](https://github.com/mkappworks-dev/cloudzilla-app/issues/74)) ([61d13fb](https://github.com/mkappworks-dev/cloudzilla-app/commit/61d13fb728c9039a51b53fc7655f85d8ed17efb1))
+* **auth:** mark /oauth/token responses Cache-Control: no-store ([#65](https://github.com/mkappworks-dev/cloudzilla-app/issues/65)) ([9f59073](https://github.com/mkappworks-dev/cloudzilla-app/commit/9f59073e46b28717803d161df8f80d11c22ea2a5))
+* **auth:** only repo owners grant, change or remove the admin role ([#93](https://github.com/mkappworks-dev/cloudzilla-app/issues/93)) ([f388e23](https://github.com/mkappworks-dev/cloudzilla-app/commit/f388e231ebdafa1d9036bd1b6a5c2e1ef8acef5a))
+* **auth:** require TOTP on API login ([#70](https://github.com/mkappworks-dev/cloudzilla-app/issues/70)) ([325a2c4](https://github.com/mkappworks-dev/cloudzilla-app/commit/325a2c40c317dcfd88da6d4c90189dee5e7aac64))
+* **auth:** require TOTP on LDAP, SAML and Google sign-in ([#69](https://github.com/mkappworks-dev/cloudzilla-app/issues/69)) ([d68c4b1](https://github.com/mkappworks-dev/cloudzilla-app/commit/d68c4b120bcfa53195078af129f614f0931718a0))
+* **auth:** return RFC 6749 errors from /oauth/token and accept Basic client auth ([#64](https://github.com/mkappworks-dev/cloudzilla-app/issues/64)) ([8d144df](https://github.com/mkappworks-dev/cloudzilla-app/commit/8d144df3293b07b86489955c15f211604c4d5926))
+* **auth:** return to the requested page after sign-in ([#62](https://github.com/mkappworks-dev/cloudzilla-app/issues/62)) ([660bcd6](https://github.com/mkappworks-dev/cloudzilla-app/commit/660bcd64abbc46b9e55344c7c6e1771dcdbf219f))
+* **git:** accept delete-only pushes without a pack ([#82](https://github.com/mkappworks-dev/cloudzilla-app/issues/82)) ([3ffa670](https://github.com/mkappworks-dev/cloudzilla-app/commit/3ffa6703fd2eeb232b0edde841dbace5e9a6ae34))
+* **git:** check pushed history is connected, not just its tip ([#78](https://github.com/mkappworks-dev/cloudzilla-app/issues/78)) ([b2815b8](https://github.com/mkappworks-dev/cloudzilla-app/commit/b2815b8055101c4f52e3fcbe909bf89eb95ffa2a))
+* **git:** enforce branch protection before receive-pack writes the ref ([#68](https://github.com/mkappworks-dev/cloudzilla-app/issues/68)) ([9ccd79e](https://github.com/mkappworks-dev/cloudzilla-app/commit/9ccd79e38e88609bfa68c20f1f845b3a7efdd064))
+* **git:** keep server paths out of receive-pack unpack errors ([#85](https://github.com/mkappworks-dev/cloudzilla-app/issues/85)) ([7dcab34](https://github.com/mkappworks-dev/cloudzilla-app/commit/7dcab34a17a81a5f25dd913fb09c8f4118ec163e))
+* **git:** refuse protected-branch pushes that can't be proven fast-forward ([#71](https://github.com/mkappworks-dev/cloudzilla-app/issues/71)) ([292b7ff](https://github.com/mkappworks-dev/cloudzilla-app/commit/292b7ff7654bb9ab02c682b50b6f562be86755d9))
+* **git:** refuse pushes to missing objects and keep server errors out of push status ([#77](https://github.com/mkappworks-dev/cloudzilla-app/issues/77)) ([cc4b466](https://github.com/mkappworks-dev/cloudzilla-app/commit/cc4b4668447c5c0a1d5a69028f87abe78bfa2b41))
+* **git:** refuse pushes whose ref moved after the client read it ([#67](https://github.com/mkappworks-dev/cloudzilla-app/issues/67)) ([1d2912f](https://github.com/mkappworks-dev/cloudzilla-app/commit/1d2912f174e21a1c667379b2e76d704a4a37f0f4))
+* **git:** refuse web commits when a push moved the branch mid-write ([#66](https://github.com/mkappworks-dev/cloudzilla-app/issues/66)) ([6ff2f26](https://github.com/mkappworks-dev/cloudzilla-app/commit/6ff2f266e81ef995becb37cd60b72d4b9cd07262))
+* **git:** refuse web deletes of branches that block force pushes ([#76](https://github.com/mkappworks-dev/cloudzilla-app/issues/76)) ([9c5c0a4](https://github.com/mkappworks-dev/cloudzilla-app/commit/9c5c0a4cc0bcae2e917561d611dcb257f5224d0f))
+* hide database errors on forms and require read access on new issue/PR pages ([#57](https://github.com/mkappworks-dev/cloudzilla-app/issues/57)) ([6c013e9](https://github.com/mkappworks-dev/cloudzilla-app/commit/6c013e947230288d9c4cdf48abf6b8e1efd7c9c7))
+* **issues:** hide private issues from pinned and milestone lists ([#98](https://github.com/mkappworks-dev/cloudzilla-app/issues/98)) ([e4731c7](https://github.com/mkappworks-dev/cloudzilla-app/commit/e4731c7f75c30521c3d275aacb71f265e83e6b35))
+* **issues:** hide private issues from PR linked issues and the Issues tab count ([#101](https://github.com/mkappworks-dev/cloudzilla-app/issues/101)) ([a215b07](https://github.com/mkappworks-dev/cloudzilla-app/commit/a215b07fe22ad67194f8d2a06e7312d1c876d836))
+* **issues:** show private issues to repo and org owners ([#94](https://github.com/mkappworks-dev/cloudzilla-app/issues/94)) ([e75fb46](https://github.com/mkappworks-dev/cloudzilla-app/commit/e75fb467ea04f78ef44dfe591a98c292dacc801f))
+* **notifications:** only notify users who can still read the repo ([#92](https://github.com/mkappworks-dev/cloudzilla-app/issues/92)) ([39ed6f4](https://github.com/mkappworks-dev/cloudzilla-app/commit/39ed6f40c1e5b39acfefb6d3d0170cf24f562b1e))
+* **search:** hide private issues and soft-deleted repos from search ([#91](https://github.com/mkappworks-dev/cloudzilla-app/issues/91)) ([bfdebf1](https://github.com/mkappworks-dev/cloudzilla-app/commit/bfdebf1b52a78193d8a655aa9b28f6862512670c))
+* **ssh:** send session errors to stderr so git shows them ([#88](https://github.com/mkappworks-dev/cloudzilla-app/issues/88)) ([7707a8f](https://github.com/mkappworks-dev/cloudzilla-app/commit/7707a8f753db25d6b57207e8d40699ffce63518e))
+* **stats:** dedupe commit stats per SHA and add stats backfill command ([#48](https://github.com/mkappworks-dev/cloudzilla-app/issues/48)) ([f890283](https://github.com/mkappworks-dev/cloudzilla-app/commit/f890283495ef1e6b6f3171d5dde8628de4412122))
+* **store:** remove broken, unused ListReposByTopic ([#75](https://github.com/mkappworks-dev/cloudzilla-app/issues/75)) ([95c2e28](https://github.com/mkappworks-dev/cloudzilla-app/commit/95c2e2862990de91abb7de4587778490e515b469))
+* **ui:** callers' classes reach component elements ([#50](https://github.com/mkappworks-dev/cloudzilla-app/issues/50)) ([efa2bfc](https://github.com/mkappworks-dev/cloudzilla-app/commit/efa2bfc0049acaaf83a99a4e2c490dfe0d483323))
+* **ui:** let callers override type on CommandItem, Toggle and DropdownMenuTrigger ([#52](https://github.com/mkappworks-dev/cloudzilla-app/issues/52)) ([16297fe](https://github.com/mkappworks-dev/cloudzilla-app/commit/16297fec07f3b9a9800e85bf1da3fef7d7ac94b1))
+
+
+### Technical
+
+* enforce gofmt via golangci-lint ([#86](https://github.com/mkappworks-dev/cloudzilla-app/issues/86)) ([7076b0f](https://github.com/mkappworks-dev/cloudzilla-app/commit/7076b0f9ade90fe098497d6658be094a7d8b96af))
+* lint backlog ([#55](https://github.com/mkappworks-dev/cloudzilla-app/issues/55)) ([5b937d9](https://github.com/mkappworks-dev/cloudzilla-app/commit/5b937d909032dc3fc743142fd7a8b27492ab0317))
+
+
+### Tests
+
+* clean up organizations that integration tests leak ([#83](https://github.com/mkappworks-dev/cloudzilla-app/issues/83)) ([3760784](https://github.com/mkappworks-dev/cloudzilla-app/commit/37607849a468e767d876dcdb84ef8ce383c689a6))
+* clean up users and repositories that integration tests leak ([#81](https://github.com/mkappworks-dev/cloudzilla-app/issues/81)) ([0efdb3e](https://github.com/mkappworks-dev/cloudzilla-app/commit/0efdb3e90eccdb4d2e8b0006d175fad72d37bd31))
+* **router:** keep an account alive in newVerificationRouter ([#99](https://github.com/mkappworks-dev/cloudzilla-app/issues/99)) ([21b0704](https://github.com/mkappworks-dev/cloudzilla-app/commit/21b0704f3720563979a0735bd7e569cae96b3dd0))
+* **ssh:** add a receive-pack harness that drives pushes over SSH ([#89](https://github.com/mkappworks-dev/cloudzilla-app/issues/89)) ([71f203c](https://github.com/mkappworks-dev/cloudzilla-app/commit/71f203cf93bf10e7e19324b3f09d2b64280cc039))
+* stop seeding an 'owner' permissions row for repo owners ([#96](https://github.com/mkappworks-dev/cloudzilla-app/issues/96)) ([0075e3c](https://github.com/mkappworks-dev/cloudzilla-app/commit/0075e3cff3f5453afb3838b605273eb785495261))
+* stop the repo handler tests writing repos into the source tree ([#84](https://github.com/mkappworks-dev/cloudzilla-app/issues/84)) ([9050db4](https://github.com/mkappworks-dev/cloudzilla-app/commit/9050db499ef02d700b7161f286a61dcb4d682e1e))
+* use UniqueSuffix for test data names so -count&gt;1 passes ([#49](https://github.com/mkappworks-dev/cloudzilla-app/issues/49)) ([180db1d](https://github.com/mkappworks-dev/cloudzilla-app/commit/180db1d9e672b08a8ea9fd1728ff2358e352e731))
+
 ## [0.3.0](https://github.com/mkappworks-dev/cloudzilla-app/compare/v0.2.0...v0.3.0) (2026-05-20)
 
 

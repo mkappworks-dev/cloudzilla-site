@@ -2,7 +2,7 @@
 
 The marketing and documentation site for [Cloudzilla](https://github.com/mkappworks-dev/cloudzilla-app) — a minimal, self-hosted Git forge. Single binary, no external runtime dependencies.
 
-Built with [Astro](https://astro.build) and [Tailwind CSS](https://tailwindcss.com), shipped as a fully static site to [cloudzilla.dev](https://cloudzilla.dev).
+Built with [Astro](https://astro.build) 7 and [Tailwind CSS](https://tailwindcss.com) 4, shipped as a fully static site to [cloudzilla.dev](https://cloudzilla.dev).
 
 ## What's here
 
@@ -14,6 +14,7 @@ Built with [Astro](https://astro.build) and [Tailwind CSS](https://tailwindcss.c
 ## Prerequisites
 
 - [Bun](https://bun.sh) (this project uses Bun as its package manager)
+- Node.js 22.12 or newer (required by Astro 7)
 
 ## Getting started
 

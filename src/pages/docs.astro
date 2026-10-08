@@ -16,7 +16,7 @@ const cbDocker = {
   -e CZ_DATABASE_DSN=postgres://cz:secret@db:5432/cloudzilla?sslmode=disable \\
   -e CZ_SERVER_BASE_URL=https://git.example.com \\
   -e CZ_AUTH_JWT_SECRET=replace-with-a-long-random-string \\
-  ghcr.io/mkappworks-dev/cloudzilla-app:v0.3.0
+  ghcr.io/mkappworks-dev/cloudzilla-app:v0.6.0
 
 # run migrations once — the CLI is bundled in the same image
 docker exec -it cloudzilla /app/cloudzilla-cli migrate`,
@@ -26,7 +26,7 @@ docker exec -it cloudzilla /app/cloudzilla-cli migrate`,
     <span class="c-flag">-e</span> CZ_DATABASE_DSN=<span class="c-str">postgres://cz:secret@db:5432/cloudzilla?sslmode=disable</span> <span class="c-flag">\\</span>
     <span class="c-flag">-e</span> CZ_SERVER_BASE_URL=<span class="c-str">https://git.example.com</span> <span class="c-flag">\\</span>
     <span class="c-flag">-e</span> CZ_AUTH_JWT_SECRET=<span class="c-str">replace-with-a-long-random-string</span> <span class="c-flag">\\</span>
-    ghcr.io/mkappworks-dev/cloudzilla-app:v0.3.0
+    ghcr.io/mkappworks-dev/cloudzilla-app:v0.6.0
 
 <span class="c-comment"># run migrations once — the CLI is bundled in the same image</span>
 <span class="c-prompt">$</span> docker exec -it cloudzilla /app/cloudzilla-cli migrate
@@ -36,7 +36,7 @@ docker exec -it cloudzilla /app/cloudzilla-cli migrate`,
 const cbCompose = {
   copy: `services:
   cloudzilla:
-    image: ghcr.io/mkappworks-dev/cloudzilla-app:v0.3.0
+    image: ghcr.io/mkappworks-dev/cloudzilla-app:v0.6.0
     ports: ["8080:8080", "2222:2222"]
     volumes: ["cloudzilla_data:/data"]
     environment:
@@ -44,20 +44,21 @@ const cbCompose = {
       CZ_SERVER_BASE_URL: https://git.example.com
       CZ_AUTH_JWT_SECRET: replace-with-a-long-random-string
       CZ_AUTH_COOKIE_SECURE: "true"
+      CZ_SECURITY_SECRET_KEY: replace-with-at-least-32-random-bytes
     depends_on: [db]
   db:
-    image: postgres:17-alpine
+    image: postgres:18-alpine
     environment:
       POSTGRES_USER: cz
       POSTGRES_PASSWORD: secret
       POSTGRES_DB: cloudzilla
-    volumes: ["czdata:/var/lib/postgresql/data"]
+    volumes: ["czdata:/var/lib/postgresql"]
 volumes:
   czdata:
   cloudzilla_data:`,
   html: `<span class="c-comment">services:</span>
   cloudzilla:
-    image: ghcr.io/mkappworks-dev/cloudzilla-app:v0.3.0
+    image: ghcr.io/mkappworks-dev/cloudzilla-app:v0.6.0
     ports: [<span class="c-str">"8080:8080"</span>, <span class="c-str">"2222:2222"</span>]
     volumes: [<span class="c-str">"cloudzilla_data:/data"</span>]
     environment:
@@ -65,14 +66,15 @@ volumes:
       CZ_SERVER_BASE_URL: <span class="c-str">https://git.example.com</span>
       CZ_AUTH_JWT_SECRET: <span class="c-str">replace-with-a-long-random-string</span>
       CZ_AUTH_COOKIE_SECURE: <span class="c-str">"true"</span>
+      CZ_SECURITY_SECRET_KEY: <span class="c-str">replace-with-at-least-32-random-bytes</span>
     depends_on: [db]
   db:
-    image: postgres:17-alpine
+    image: postgres:18-alpine
     environment:
       POSTGRES_USER: cz
       POSTGRES_PASSWORD: secret
       POSTGRES_DB: cloudzilla
-    volumes: [<span class="c-str">"czdata:/var/lib/postgresql/data"</span>]
+    volumes: [<span class="c-str">"czdata:/var/lib/postgresql"</span>]
 volumes:
   czdata:
   cloudzilla_data:`,
@@ -156,6 +158,7 @@ const description =
               <a class="dn-link" href="#configuration">Configuration</a>
               <a class="dn-link" href="#git-access">Git access</a>
               <a class="dn-link" href="#reverse-proxy">Reverse proxy &amp; TLS</a>
+              <a class="dn-link" href="#monitoring">Health &amp; metrics</a>
             </div>
             <div class="dn-group">
               <p class="dn-label">Administration</p>
@@ -187,7 +190,7 @@ const description =
             <h3>What you'll need</h3>
             <ul class="dl">
               <li>A Linux host (amd64 or arm64), or Docker on any platform.</li>
-              <li><strong>PostgreSQL 14+</strong> — managed or self-run; it's the only runtime dependency.</li>
+              <li><strong>PostgreSQL 14+</strong> — managed or self-run; it's the only runtime dependency. The bundled Compose stack runs PostgreSQL 18.</li>
               <li>Two open ports: one for HTTP (default <code class="ic">8080</code>) and one for SSH Git access (default <code class="ic">2222</code>).</li>
             </ul>
           </section>
@@ -271,15 +274,40 @@ const description =
                   <td class="d">Set the <code class="ic">Secure</code> flag on cookies — enable when serving over HTTPS.</td>
                   <td class="def">false</td>
                 </tr>
+                <tr>
+                  <td class="k"><code class="ic">CZ_SECURITY_SECRET_KEY</code></td>
+                  <td class="d">Encrypts credentials the server must read back later, such as pull-mirror tokens. At least 32 bytes. <span class="req">set in prod</span></td>
+                  <td class="def">—</td>
+                </tr>
+                <tr>
+                  <td class="k"><code class="ic">CZ_SERVER_TRUSTED_PROXIES</code></td>
+                  <td class="d">Reverse-proxy IPs / CIDRs whose <code class="ic">X-Forwarded-For</code> is believed. Needed for per-IP rate limits behind a proxy.</td>
+                  <td class="def">—</td>
+                </tr>
+                <tr>
+                  <td class="k"><code class="ic">CZ_STORAGE_BACKEND</code></td>
+                  <td class="d">Where uploads such as avatars live: <code class="ic">local</code> or <code class="ic">s3</code> (set the <code class="ic">CZ_STORAGE_S3_*</code> variables for any S3-compatible bucket).</td>
+                  <td class="def">local</td>
+                </tr>
+                <tr>
+                  <td class="k"><code class="ic">CZ_RATE_LIMIT_ENABLED</code></td>
+                  <td class="d">Rate-limit pages, API, Git-over-HTTP, archives, and search per user and per IP. Budgets are tunable via <code class="ic">CZ_RATE_LIMIT_*</code>.</td>
+                  <td class="def">true</td>
+                </tr>
+                <tr>
+                  <td class="k"><code class="ic">CZ_METRICS_LISTEN_ADDR</code></td>
+                  <td class="d">Address of a separate listener serving Prometheus <code class="ic">/metrics</code>. Off when empty.</td>
+                  <td class="def">—</td>
+                </tr>
               </tbody>
             </table>
             <div class="callout warn">
               <span class="co-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg></span>
-              <p>Always set <code class="ic">CZ_AUTH_JWT_SECRET</code> to a long, fixed random string in production. The built-in default is a known dev placeholder — leaving it in place lets anyone forge session tokens.</p>
+              <p>Always set <code class="ic">CZ_AUTH_JWT_SECRET</code> and <code class="ic">CZ_SECURITY_SECRET_KEY</code> to long, fixed random strings in production. The built-in JWT default is a known dev placeholder — leaving it in place lets anyone forge session tokens.</p>
             </div>
 
             <h3>Email &amp; OAuth (optional)</h3>
-            <p>Both are off until configured. Set <code class="ic">CZ_SMTP_HOST</code> (plus <code class="ic">CZ_SMTP_PORT</code>, <code class="ic">CZ_SMTP_USERNAME</code>, <code class="ic">CZ_SMTP_PASSWORD</code>, <code class="ic">CZ_SMTP_FROM</code>, <code class="ic">CZ_SMTP_TLS</code>) to enable email notifications. For Google sign-in, set <code class="ic">CZ_OAUTH_GOOGLE_CLIENT_ID</code>, <code class="ic">CZ_OAUTH_GOOGLE_CLIENT_SECRET</code>, and <code class="ic">CZ_OAUTH_GOOGLE_REDIRECT_URL</code> (must match the URI registered in the Google console).</p>
+            <p>Both are off until configured. Set <code class="ic">CZ_SMTP_HOST</code> (plus <code class="ic">CZ_SMTP_PORT</code>, <code class="ic">CZ_SMTP_USERNAME</code>, <code class="ic">CZ_SMTP_PASSWORD</code>, <code class="ic">CZ_SMTP_FROM</code>, <code class="ic">CZ_SMTP_TLS</code>) to enable email notifications, email-verified sign-up, and password reset by email. For Google sign-in, set <code class="ic">CZ_OAUTH_GOOGLE_CLIENT_ID</code>, <code class="ic">CZ_OAUTH_GOOGLE_CLIENT_SECRET</code>, and <code class="ic">CZ_OAUTH_GOOGLE_REDIRECT_URL</code> (must match the URI registered in the Google console).</p>
           </section>
 
           <!-- Git access -->
@@ -309,13 +337,28 @@ const description =
             </div>
           </section>
 
+          <!-- Monitoring -->
+          <section class="docs-section" id="monitoring">
+            <h2>Health &amp; metrics</h2>
+            <p>Two unauthenticated probe endpoints answer on the main HTTP port, ahead of all middleware — no log line, no cookie, no rate limit.</p>
+            <ul class="dl">
+              <li><strong><code class="ic">/healthz</code></strong> — liveness: <code class="ic">200 ok</code> whenever the process serves HTTP. The Docker image's <code class="ic">HEALTHCHECK</code> uses it.</li>
+              <li><strong><code class="ic">/readyz</code></strong> — readiness: <code class="ic">200</code> when the database, applied migrations, and repository storage all check out, otherwise <code class="ic">503</code>. Use it for load-balancer and Kubernetes readiness probes.</li>
+            </ul>
+            <p>For Prometheus, set <code class="ic">CZ_METRICS_LISTEN_ADDR</code> (for example <code class="ic">127.0.0.1:9090</code>) to start a second listener that serves only <code class="ic">GET /metrics</code>.</p>
+            <div class="callout warn">
+              <span class="co-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg></span>
+              <p>The metrics port has no authentication. Bind it to loopback or a private network only Prometheus can reach — don't publish it and don't proxy it.</p>
+            </div>
+          </section>
+
           <!-- Backups -->
           <section class="docs-section" id="backups">
             <h2>Backups</h2>
             <p>Because all state — repositories, issues, users, settings — lives in PostgreSQL and on the repository volume, a backup is two things: a database dump and the data directory.</p>
             <ul class="dl">
               <li><strong>Database:</strong> a regular <code class="ic">pg_dump</code> of the Cloudzilla database captures all metadata and search indexes.</li>
-              <li><strong>Repositories:</strong> snapshot the configured <code class="ic">CZ_GIT_REPOS_ROOT</code> (under Docker, the <code class="ic">/data</code> volume that also holds the SSH host key).</li>
+              <li><strong>Repositories:</strong> snapshot the configured <code class="ic">CZ_GIT_REPOS_ROOT</code> (under Docker, the <code class="ic">/data</code> volume that also holds the SSH host key and, with the default local storage backend, uploaded avatars).</li>
             </ul>
             <CodeBlock caption="nightly dump" copy={cbBackup.copy} html={cbBackup.html} />
           </section>
@@ -326,10 +369,18 @@ const description =
             <p>Upgrades are a binary (or image tag) swap, followed by a migration run. The server doesn't migrate on its own, so run the bundled CLI after pulling the new version.</p>
             <ol class="docs-steps">
               <li><strong>Back up</strong> the database first — see <a class="ilink" href="#backups">Backups</a>.</li>
-              <li><strong>Pull the new tag</strong> (e.g. bump <code class="ic">v0.3.0</code> → the next release).</li>
+              <li><strong>Pull the new tag</strong> (e.g. bump <code class="ic">v0.5.0</code> → <code class="ic">v0.6.0</code>).</li>
               <li><strong>Run migrations</strong> with the new <code class="ic">cloudzilla-cli migrate</code>, then restart the container or service.</li>
               <li><strong>Watch the logs</strong> — the instance reports it's serving once it's up.</li>
             </ol>
+            <div class="callout warn">
+              <span class="co-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg></span>
+              <p><strong>Postgres 17 → 18 (since v0.5.0).</strong> The Compose stack now runs <code class="ic">postgres:18-alpine</code>, which can't open a volume created by 17. <code class="ic">pg_dump -Fc</code> first, remove only the Postgres volume (not <code class="ic">down -v</code>), start the new stack, and <code class="ic">pg_restore</code>.</p>
+            </div>
+            <div class="callout note">
+              <span class="co-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></span>
+              <p><code class="ic">healthz</code> and <code class="ic">readyz</code> are now reserved owner names, and migration <code class="ic">082</code> refuses to run while two accounts have emails that differ only by case. Fix any such accounts, then run <code class="ic">cloudzilla-cli migrate</code> again.</p>
+            </div>
             <div class="callout tip">
               <span class="co-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2z"/></svg></span>
               <p>Cloudzilla is in alpha — read the <a class="ilink" href={LINKS.changelog}>changelog</a> before upgrading. Breaking changes are called out there per release.</p>
